@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Money Route</string>
+    <string name="placeholder_email_field">Correo</string>
+    <string name="placeholder_password_field">Contraseña</string>
+    <string name="button_login">Iniciar sesión</string>
+    <string name="text_you_do_not_have_an_account">¿Aún no tienes una cuenta?</string>
+    <string name="text_clickable_register_here">Registrate aquí</string>
+</resources>
