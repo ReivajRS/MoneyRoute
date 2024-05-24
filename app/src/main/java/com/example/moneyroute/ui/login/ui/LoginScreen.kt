@@ -45,7 +45,10 @@ fun LoginScreen(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Login(Modifier.align(Alignment.Center), viewModel)
+        Login(
+            modifier = Modifier.align(Alignment.Center),
+            viewModel = viewModel
+        )
     }
 }
 

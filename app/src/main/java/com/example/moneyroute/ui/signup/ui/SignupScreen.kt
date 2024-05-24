@@ -42,7 +42,7 @@ fun SignupScreen(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
     ) {
         Signup(
             modifier = Modifier.align(Alignment.Center),
-            viewModel = SignupViewModel()
+            viewModel = viewModel
         )
     }
 }
@@ -53,6 +53,7 @@ fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
     val lastName: String by viewModel.lastName.collectAsState()
     val email: String by viewModel.email.collectAsState()
     val password: String by viewModel.password.collectAsState()
+    val confirmPassword: String by viewModel.confirmPassword.collectAsState()
     val signupEnable: Boolean by viewModel.signupEnable.collectAsState()
 
     Column(modifier = modifier) {
@@ -60,22 +61,27 @@ fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
         Spacer(modifier = Modifier.padding(16.dp))
         FirstNameField(
             firstName = firstName,
-            onTextFieldChange = { viewModel.onSignupChange(it, lastName, email, password) }
+            onTextFieldChange = { viewModel.onSignupChange(it, lastName, email, password, confirmPassword) }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         LastNameField(
             lastName = lastName,
-            onTextFieldChange = { viewModel.onSignupChange(firstName, it, email, password) }
+            onTextFieldChange = { viewModel.onSignupChange(firstName, it, email, password, confirmPassword) }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         EmailField(
             email = email,
-            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, it, password) }
+            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, it, password, confirmPassword) }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         PasswordField(
             password = password,
-            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, email, it) }
+            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, email, it, confirmPassword) }
+        )
+        Spacer(modifier = Modifier.padding(8.dp))
+        ConfirmPasswordField(
+            confirmPassword = confirmPassword,
+            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, email, password, it) }
         )
         Spacer(modifier = Modifier.padding(16.dp))
         SignupButton(
@@ -138,6 +144,19 @@ fun PasswordField(modifier: Modifier = Modifier, password: String, onTextFieldCh
         value = password,
         onValueChange = { onTextFieldChange(it) },
         placeholder = { Text(text = stringResource(id = R.string.placeholder_password_field)) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        singleLine = true,
+        visualTransformation = PasswordVisualTransformation(),
+        modifier = modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+fun ConfirmPasswordField(modifier: Modifier = Modifier, confirmPassword: String, onTextFieldChange: (String) -> Unit) {
+    TextField(
+        value = confirmPassword,
+        onValueChange = { onTextFieldChange(it) },
+        placeholder = { Text(text = stringResource(id = R.string.placeholder_confirm_password_field)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         visualTransformation = PasswordVisualTransformation(),
