@@ -19,6 +19,12 @@
     <string name="text_add">Agregar</string>
     <string name="text_type">Tipo</string>
     <string name="text_periodicity">Periodicidad</string>
+    <string name="text_label">Etiqueta</string>
+    <string name="text_goal_amout">Importe objetivo</string>
+    <string name="text_start_date">Fecha inicial</string>
+    <string name="text_goal_date">Fecha objetivo</string>
     <string name="title_register_movement">Registrar movimiento</string>
     <string name="title_register_periodic_movement">Registrar movimiento periódico</string>
+    <string name="title_register_goal">Registrar meta</string>
+    <string name="title_contribute_goal">Abonar meta</string>
 </resources>

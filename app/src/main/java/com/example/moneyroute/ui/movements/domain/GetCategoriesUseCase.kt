@@ -1,4 +1,4 @@
-package com.example.moneyroute.ui.login.domain
+package com.example.moneyroute.ui.movements.domain
 
 class GetCategoriesUseCase() {
     private val categories = listOf(

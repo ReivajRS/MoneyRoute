@@ -17,7 +17,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
-import com.example.moneyroute.ui.login.domain.Periodicity
+import com.example.moneyroute.ui.components.AddButton
+import com.example.moneyroute.ui.components.AmountField
+import com.example.moneyroute.ui.components.CustomDatePicker
+import com.example.moneyroute.ui.components.RowElement
+import com.example.moneyroute.ui.movements.data.Periodicity
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 import java.time.Instant
 import java.time.ZoneId
@@ -33,7 +37,7 @@ fun RegisterMovementScreen(
             topBar = { RegisterMovementTopBar(isPeriodicMovement = isPeriodicMovement) }
         ) { innerPadding ->
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .padding(innerPadding)
                     .padding(16.dp)
@@ -79,15 +83,10 @@ fun RegisterMovement(
     isPeriodicMovement: Boolean,
     viewModel: RegisterMovementViewModel
 ) {
-    val amount: String by viewModel.amount.collectAsState()
+    val movementState: MovementState by viewModel.movementState.collectAsState()
     val movementTypes: List<String> by viewModel.movementTypes.collectAsState()
-    val selectedMovementType: String by viewModel.selectedMovementType.collectAsState()
     val categories: List<String> by viewModel.categories.collectAsState()
-    val selectedCategory: String by viewModel.selectedCategory.collectAsState()
-    val selectedDate: Long? by viewModel.selectedDate.collectAsState()
     val periodicities: List<Periodicity> by viewModel.periodicities.collectAsState()
-    val selectedPeriodicity: Periodicity? by viewModel.selectedPeriodicity.collectAsState()
-    val description: String by viewModel.description.collectAsState()
     val context = LocalContext.current
 
     Column(
@@ -101,8 +100,8 @@ fun RegisterMovement(
             text = stringResource(id = R.string.text_amount),
         ) {
             AmountField(
-                amount = amount,
-                onTextFieldChange = { viewModel.onAmountChange(it) }
+                amount = movementState.amount,
+                onAmountChange = { viewModel.onAmountChange(it) }
             )
         }
 
@@ -113,7 +112,7 @@ fun RegisterMovement(
         ) {
             MovementTypeDropDownMenu(
                 movementTypes = movementTypes,
-                selectedMovementType = selectedMovementType,
+                selectedMovementType = movementState.movementType,
                 onMovementTypeSelected = { viewModel.onMovementTypeSelected(it) }
             )
         }
@@ -125,7 +124,7 @@ fun RegisterMovement(
         ) {
             CategoryDropdownMenu(
                 categories = categories,
-                selectedCategory = selectedCategory,
+                selectedCategory = movementState.category,
                 onCategorySelected = { viewModel.onCategorySelected(it) }
             )
         }
@@ -135,8 +134,8 @@ fun RegisterMovement(
         RowElement(
             text = stringResource(id = R.string.text_date),
         ) {
-            MovementDatePicker(
-                selectedDate = selectedDate,
+            CustomDatePicker(
+                selectedDate = movementState.date,
                 onDateSelected = { viewModel.onDateSelected(it) }
             )
         }
@@ -149,7 +148,7 @@ fun RegisterMovement(
             ) {
                 PeriodicityDropDownMenu(
                     periodicities = periodicities,
-                    selectedPeriodicity = selectedPeriodicity,
+                    selectedPeriodicity = movementState.periodicity,
                     onPeriodicitySelected = { viewModel.onPeriodicitySelected(it) }
                 )
             }
@@ -163,56 +162,19 @@ fun RegisterMovement(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp),
-            description = description,
-            onTextFieldChange = { viewModel.onDescriptionChange(it) }
+            description = movementState.description,
+            onDescriptionChange = { viewModel.onDescriptionChange(it) }
         )
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        AddMovementButton(
+        AddButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .width(160.dp),
             onAddClicked = { viewModel.onAddClicked(context) }
         )
     }
-}
-
-@Composable
-fun RowElement(
-    modifier: Modifier = Modifier,
-    text: String,
-    content: @Composable () -> Unit
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = text, modifier = Modifier.width(100.dp))
-        Spacer(modifier = Modifier.width(16.dp))
-        content()
-    }
-}
-
-@Composable
-fun AmountField(
-    modifier: Modifier = Modifier,
-    amount: String,
-    onTextFieldChange: (String) -> Unit
-) {
-    TextField(
-        value = amount,
-        onValueChange = { onTextFieldChange(it) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        singleLine = true,
-        placeholder = {
-            Text(text = "0.0")
-        },
-        prefix = {
-            Text(text = "$")
-        },
-        modifier = modifier.fillMaxWidth()
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -309,63 +271,6 @@ fun CategoryDropdownMenu(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovementDatePicker(
-    modifier: Modifier = Modifier,
-    selectedDate: Long?,
-    onDateSelected: (Long?) -> Unit
-) {
-    var showDialog by remember { mutableStateOf(false) }
-    var dateString by remember { mutableStateOf("") }
-    if (selectedDate != null) {
-        val localDate = Instant.ofEpochMilli(selectedDate).atZone(ZoneId.of("UTC")).toLocalDate()
-        dateString = "${localDate.dayOfMonth}/${localDate.monthValue}/${localDate.year}"
-    }
-
-    OutlinedTextField(
-        value = dateString,
-        onValueChange = {  },
-        singleLine = true,
-        readOnly = true,
-        placeholder = {
-            Text(text = stringResource(id = R.string.text_select))
-        },
-        trailingIcon = {
-            IconButton(onClick = { showDialog = true }) {
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Pick a selectedDate")
-            }
-        },
-        modifier = modifier.fillMaxWidth()
-    )
-
-    if (showDialog) {
-        val dateState = rememberDatePickerState(initialSelectedDateMillis = selectedDate)
-        DatePickerDialog(
-            onDismissRequest = {
-                showDialog = false
-            },
-            confirmButton = {
-                Button(onClick = {
-                    onDateSelected(dateState.selectedDateMillis)
-                    showDialog = false
-                }) {
-                    Text(text = stringResource(id = R.string.text_confirm))
-                }
-            },
-            dismissButton = {
-                OutlinedButton(onClick = { showDialog = false }) {
-                    Text(text = stringResource(id = R.string.text_cancel))
-                }
-            }
-        ) {
-            DatePicker(
-                state = dateState
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun PeriodicityDropDownMenu(
     modifier: Modifier = Modifier,
     periodicities: List<Periodicity>,
@@ -414,19 +319,12 @@ fun PeriodicityDropDownMenu(
 fun DescriptionField(
     modifier: Modifier = Modifier,
     description: String,
-    onTextFieldChange: (String) -> Unit){
+    onDescriptionChange: (String) -> Unit){
     TextField(
         value = description,
-        onValueChange = { onTextFieldChange(it) },
+        onValueChange = { onDescriptionChange(it) },
         modifier = modifier
     )
-}
-
-@Composable
-fun AddMovementButton(modifier: Modifier = Modifier, onAddClicked: () -> Unit) {
-    Button(onClick = { onAddClicked() }, modifier = modifier) {
-        Text(text = stringResource(id = R.string.text_add))
-    }
 }
 
 @Preview(showSystemUi = true, showBackground = true)

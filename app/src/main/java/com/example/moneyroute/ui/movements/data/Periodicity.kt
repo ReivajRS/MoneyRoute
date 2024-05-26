@@ -1,4 +1,4 @@
-package com.example.moneyroute.ui.login.domain
+package com.example.moneyroute.ui.movements.data
 
 data class Periodicity(
     val description: String,

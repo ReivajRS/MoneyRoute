@@ -1,4 +1,7 @@
-package com.example.moneyroute.ui.login.domain
+package com.example.moneyroute.ui.movements.domain
+
+import com.example.moneyroute.ui.movements.data.Periodicity
+import com.example.moneyroute.ui.movements.data.RepetitionType
 
 class GetPeriodicitiesUseCase() {
     // TODO: AGREGAR Y RECUPERAR LAS PERIODICIDADES DE LA BD

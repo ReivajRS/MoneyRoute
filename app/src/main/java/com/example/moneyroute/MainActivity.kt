@@ -10,6 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.moneyroute.ui.goals.ui.register.RegisterGoalScreen
+import com.example.moneyroute.ui.goals.ui.register.RegisterGoalViewModel
 import com.example.moneyroute.ui.login.ui.LoginScreen
 import com.example.moneyroute.ui.login.ui.LoginViewModel
 import com.example.moneyroute.ui.movements.ui.RegisterMovementScreen
@@ -23,6 +25,8 @@ class MainActivity : ComponentActivity() {
     private val loginViewModel by viewModels<LoginViewModel>()
     private val signupViewModel by viewModels<SignupViewModel>()
     private val registerMovementViewModel by viewModels<RegisterMovementViewModel>()
+    private val registerGoalViewModel by viewModels<RegisterGoalViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -30,12 +34,18 @@ class MainActivity : ComponentActivity() {
                 Scaffold { innerPadding ->
 //                    LoginScreen(modifier = Modifier.padding(innerPadding).fillMaxSize(), viewModel = loginViewModel)
 //                    SignupScreen(modifier = Modifier.padding(innerPadding).fillMaxSize(), viewModel = signupViewModel)
-                    RegisterMovementScreen(
+//                    RegisterMovementScreen(
+//                        modifier = Modifier
+//                            .padding(innerPadding)
+//                            .fillMaxSize(),
+//                        isPeriodicMovement = true,
+//                        viewModel = registerMovementViewModel)
+                    RegisterGoalScreen(
                         modifier = Modifier
                             .padding(innerPadding)
                             .fillMaxSize(),
-                        isPeriodicMovement = true,
-                        viewModel = registerMovementViewModel)
+                        viewModel = registerGoalViewModel
+                    )
                 }
             }
         }
@@ -59,11 +69,17 @@ fun LoginScreenPreview() {
 fun SignupScreenPreview() {
     MoneyRouteTheme {
         Scaffold { innerPadding ->
+//            LoginScreen(modifier = Modifier.padding(innerPadding).fillMaxSize(), viewModel = LoginViewModel())
 //            SignupScreen(modifier = Modifier.padding(innerPadding).fillMaxSize(), viewModel = SignupViewModel())
-            RegisterMovementScreen(
-                modifier = Modifier.padding(innerPadding).fillMaxSize(),
-                isPeriodicMovement = true,
-                viewModel = RegisterMovementViewModel())
+//            RegisterMovementScreen(
+//                modifier = Modifier.padding(innerPadding).fillMaxSize(),
+//                isPeriodicMovement = true,
+//                viewModel = RegisterMovementViewModel()
+//            )
+            RegisterGoalScreen(
+                modifier = Modifier.padding(innerPadding),
+                viewModel = RegisterGoalViewModel()
+            )
         }
     }
 }
