@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "773526439209",
+    "project_id": "money-route-237b9",
+    "storage_bucket": "money-route-237b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773526439209:android:5cea4aea62e9c75b3de338",
+        "android_client_info": {
+          "package_name": "com.example.moneyroute"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzP9P8eJaWjI2dNQX6QhTkM1jN70Enqvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

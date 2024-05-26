@@ -9,5 +9,16 @@
     <string name="button_signup">Registrarse</string>
     <string name="text_you_do_not_have_an_account">¿Aún no tienes una cuenta?</string>
     <string name="text_clickable_register_here">Registrate aquí</string>
-    <string name="title_registrar_movimiento">Registrar movimiento</string>
+    <string name="text_amount">Importe</string>
+    <string name="text_category">Categoría</string>
+    <string name="text_description">Descripción</string>
+    <string name="text_date">Fecha</string>
+    <string name="text_select">Seleccione</string>
+    <string name="text_confirm">Confirmar</string>
+    <string name="text_cancel">Cancelar</string>
+    <string name="text_add">Agregar</string>
+    <string name="text_type">Tipo</string>
+    <string name="text_periodicity">Periodicidad</string>
+    <string name="title_register_movement">Registrar movimiento</string>
+    <string name="title_register_periodic_movement">Registrar movimiento periódico</string>
 </resources>

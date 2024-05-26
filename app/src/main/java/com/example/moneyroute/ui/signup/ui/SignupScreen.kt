@@ -109,7 +109,7 @@ fun FirstNameField(modifier: Modifier = Modifier, firstName: String, onTextField
     TextField(
         value = firstName,
         onValueChange = { onTextFieldChange(it) },
-        placeholder = { Text(text = stringResource(id = R.string.placeholder_firstname_field)) },
+        label = { Text(text = stringResource(id = R.string.placeholder_firstname_field)) },
         singleLine = true,
         modifier = modifier.fillMaxWidth()
     )
@@ -120,7 +120,7 @@ fun LastNameField(modifier: Modifier = Modifier, lastName: String, onTextFieldCh
     TextField(
         value = lastName,
         onValueChange = { onTextFieldChange(it) },
-        placeholder = { Text(text = stringResource(id = R.string.placeholder_lastname_field)) },
+        label = { Text(text = stringResource(id = R.string.placeholder_lastname_field)) },
         singleLine = true,
         modifier = modifier.fillMaxWidth()
     )
@@ -131,7 +131,7 @@ fun EmailField(modifier: Modifier = Modifier, email: String, onTextFieldChange: 
     TextField(
         value = email,
         onValueChange = { onTextFieldChange(it) },
-        placeholder = { Text(text = stringResource(id = R.string.placeholder_email_field)) },
+        label = { Text(text = stringResource(id = R.string.placeholder_email_field)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         modifier = modifier.fillMaxWidth()
@@ -143,7 +143,7 @@ fun PasswordField(modifier: Modifier = Modifier, password: String, onTextFieldCh
     TextField(
         value = password,
         onValueChange = { onTextFieldChange(it) },
-        placeholder = { Text(text = stringResource(id = R.string.placeholder_password_field)) },
+        label = { Text(text = stringResource(id = R.string.placeholder_password_field)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         visualTransformation = PasswordVisualTransformation(),
@@ -156,7 +156,7 @@ fun ConfirmPasswordField(modifier: Modifier = Modifier, confirmPassword: String,
     TextField(
         value = confirmPassword,
         onValueChange = { onTextFieldChange(it) },
-        placeholder = { Text(text = stringResource(id = R.string.placeholder_confirm_password_field)) },
+        label = { Text(text = stringResource(id = R.string.placeholder_confirm_password_field)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
         visualTransformation = PasswordVisualTransformation(),

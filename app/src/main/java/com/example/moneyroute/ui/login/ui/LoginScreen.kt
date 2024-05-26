@@ -106,10 +106,8 @@ fun EmailField(modifier: Modifier = Modifier, email: String, onTextFieldChange: 
         value = email,
         onValueChange = { onTextFieldChange(it) },
         modifier = Modifier.fillMaxWidth(),
-        placeholder = {
-            Text(
-                text = stringResource(id = R.string.placeholder_email_field)
-            )
+        label = {
+            Text(text = stringResource(id = R.string.placeholder_email_field))
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true
@@ -122,10 +120,8 @@ fun PasswordField(modifier: Modifier = Modifier, password: String, onTextFieldCh
         value = password,
         onValueChange = { onTextFieldChange(it) },
         modifier = Modifier.fillMaxWidth(),
-        placeholder = {
-            Text(
-                text = stringResource(id = R.string.placeholder_password_field)
-            )
+        label = {
+            Text(text = stringResource(id = R.string.placeholder_password_field))
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
