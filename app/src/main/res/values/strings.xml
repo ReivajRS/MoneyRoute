@@ -7,6 +7,7 @@
     <string name="placeholder_lastname_field">Apellido</string>
     <string name="button_login">Iniciar sesión</string>
     <string name="button_signup">Registrarse</string>
+    <string name="button_close">Cerrar</string>
     <string name="text_you_do_not_have_an_account">¿Aún no tienes una cuenta?</string>
     <string name="text_clickable_register_here">Registrate aquí</string>
     <string name="text_amount">Importe</string>
@@ -23,8 +24,16 @@
     <string name="text_goal_amout">Importe objetivo</string>
     <string name="text_start_date">Fecha inicial</string>
     <string name="text_goal_date">Fecha objetivo</string>
+    <string name="text_goal">Objetivo</string>
+    <string name="text_current">Actual</string>
+    <string name="text_status">Estado</string>
+    <string name="text_latest_movements">Últimos movimientos</string>
+    <string name="text_movements_list">Lista de movimientos</string>
+    <string name="text_goals_list">Lista de metas</string>
+    <string name="title_movements">Movimientos</string>
     <string name="title_register_movement">Registrar movimiento</string>
     <string name="title_register_periodic_movement">Registrar movimiento periódico</string>
+    <string name="title_goals">Metas</string>
     <string name="title_register_goal">Registrar meta</string>
     <string name="title_contribute_goal">Abonar meta</string>
 </resources>
