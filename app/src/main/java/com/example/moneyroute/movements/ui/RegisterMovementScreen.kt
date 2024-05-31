@@ -18,7 +18,6 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -43,27 +42,28 @@ import com.example.moneyroute.components.RowElement
 import com.example.moneyroute.movements.data.Periodicity
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterMovementScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterMovementViewModel,
-    isPeriodicMovement: Boolean
+    isPeriodical: Boolean
 ) {
-    Scaffold(
-        topBar = { RegisterMovementTopBar(isPeriodicMovement = isPeriodicMovement) }
-    ) { innerPadding ->
+//    Scaffold(
+//        topBar = { RegisterMovementTopBar(isPeriodical = isPeriodical) },
+//        modifier = modifier
+//    ) { innerPadding ->
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             RegisterMovement(
-                isPeriodicMovement = isPeriodicMovement,
+                isPeriodicMovement = isPeriodical,
                 viewModel = viewModel
             )
-        }
+//        }
     }
 }
 
@@ -357,7 +357,7 @@ fun RegisterMovementScreenPreview() {
     MoneyRouteTheme {
         RegisterMovementScreen(
             viewModel = RegisterMovementViewModel(),
-            isPeriodicMovement = isPeriodicMovement
+            isPeriodical = isPeriodicMovement
         )
     }
 }

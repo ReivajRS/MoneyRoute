@@ -15,9 +15,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,37 +33,62 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
-import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    onLoginSuccess: () -> Unit,
+    onWantToRegisterClicked: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TitleTopBar(title = stringResource(R.string.title_login), backButton = false)
-        },
+    Box(
         modifier = modifier
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Login(
-                modifier = Modifier.align(Alignment.Center),
-                viewModel = viewModel
-            )
-        }
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Login(
+            modifier = Modifier.align(Alignment.Center),
+            viewModel = viewModel,
+            onLoginSuccess,
+            onWantToRegisterClicked = onWantToRegisterClicked
+        )
     }
+//    Scaffold(
+//        topBar = {
+//            TitleTopBar(
+//                title = stringResource(R.string.title_login),
+//                backButton = false,
+//            )
+//        },
+//        modifier = modifier
+//    ) { innerPadding ->
+//        Box(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(innerPadding)
+//                .padding(16.dp)
+//                .verticalScroll(rememberScrollState())
+//        ) {
+//            Login(
+//                modifier = Modifier.align(Alignment.Center),
+//                viewModel = viewModel,
+//                onLoginSuccess,
+//                onWantToRegisterClicked = onWantToRegisterClicked
+//            )
+//        }
+//    }
 }
 
 @Composable
-fun Login(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
+fun Login(
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel,
+    onLoginSuccess: () -> Unit,
+    onWantToRegisterClicked: () -> Unit
+) {
     val email: String by viewModel.email.collectAsState()
     val password: String by viewModel.password.collectAsState()
     val loginEnable: Boolean by viewModel.loginEnable.collectAsState()
@@ -82,7 +107,9 @@ fun Login(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.padding(16.dp))
         EmailField(email = email, onTextFieldChange = { viewModel.onLoginChange(it, password) })
         Spacer(modifier = Modifier.padding(8.dp))
-        PasswordField(password = password, onTextFieldChange =  { viewModel.onLoginChange(email, it) })
+        PasswordField(
+            password = password,
+            onTextFieldChange = { viewModel.onLoginChange(email, it) })
         Spacer(modifier = Modifier.padding(16.dp))
         LoginButton(
             modifier = Modifier
@@ -90,10 +117,14 @@ fun Login(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                 .fillMaxWidth()
                 .height(48.dp),
             loginEnable = loginEnable,
-            onLoginClicked = { viewModel.onLoginClicked(context) }
+            onLoginClicked = { viewModel.onLoginClicked(context) },
+            onLoginSuccess = onLoginSuccess
         )
         HorizontalDivider(modifier = modifier.padding(top = 16.dp, bottom = 8.dp))
-        WantToRegister(modifier = Modifier.align(Alignment.CenterHorizontally))
+        WantToRegister(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onWantToRegisterClicked = onWantToRegisterClicked
+        )
     }
 }
 
@@ -121,7 +152,11 @@ fun EmailField(modifier: Modifier = Modifier, email: String, onTextFieldChange: 
 }
 
 @Composable
-fun PasswordField(modifier: Modifier = Modifier, password: String, onTextFieldChange: (String) -> Unit) {
+fun PasswordField(
+    modifier: Modifier = Modifier,
+    password: String,
+    onTextFieldChange: (String) -> Unit
+) {
     TextField(
         value = password,
         onValueChange = { onTextFieldChange(it) },
@@ -136,10 +171,11 @@ fun PasswordField(modifier: Modifier = Modifier, password: String, onTextFieldCh
 }
 
 @Composable
-fun LoginButton(modifier: Modifier = Modifier, loginEnable: Boolean, onLoginClicked: () -> Unit) {
+fun LoginButton(modifier: Modifier = Modifier, loginEnable: Boolean, onLoginClicked: () -> Unit, onLoginSuccess: () -> Unit) {
     Button(
         onClick = {
             onLoginClicked()
+            onLoginSuccess()
         },
         modifier = modifier,
         enabled = loginEnable
@@ -149,13 +185,18 @@ fun LoginButton(modifier: Modifier = Modifier, loginEnable: Boolean, onLoginClic
 }
 
 @Composable
-fun WantToRegister(modifier: Modifier = Modifier) {
+fun WantToRegister(
+    modifier: Modifier = Modifier,
+    onWantToRegisterClicked: () -> Unit
+) {
     Column(modifier = modifier) {
         Text(text = stringResource(id = R.string.text_you_do_not_have_an_account))
         Text(
             text = stringResource(id = R.string.text_clickable_register_here),
             color = MaterialTheme.colorScheme.primary,
-            modifier = modifier.clickable { }
+            modifier = modifier.clickable {
+                onWantToRegisterClicked()
+            }
         )
     }
 }
@@ -164,6 +205,6 @@ fun WantToRegister(modifier: Modifier = Modifier) {
 @Composable
 private fun LoginScreenPreview(modifier: Modifier = Modifier) {
     MoneyRouteTheme {
-       LoginScreen(viewModel = LoginViewModel())
+        LoginScreen(viewModel = LoginViewModel(), onLoginSuccess = {}, onWantToRegisterClicked = {})
     }
 }

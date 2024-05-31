@@ -13,7 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -29,27 +29,28 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
-import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignupViewModel
+    viewModel: SignupViewModel,
+    onBackArrowClicked: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TitleTopBar(
-                title = stringResource(id = R.string.button_signup),
-                backButton = false
-            )
-        },
-        modifier = modifier
-    ) { innerPadding ->
+//    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+//    Scaffold(
+//        topBar = {
+//            TitleTopBar(
+//                title = stringResource(id = R.string.button_signup),
+//                onBackArrowClick = onBackArrowClicked
+//            )
+//        },
+//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+//    ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -58,7 +59,7 @@ fun SignupScreen(
                 viewModel = viewModel
             )
         }
-    }
+//    }
 }
 
 @Composable
@@ -200,12 +201,12 @@ fun SignupButton(
 @Composable
 fun SignupScreenPreview() {
     MoneyRouteTheme {
-        Scaffold { innerPadding ->
+//        Scaffold { innerPadding ->
             SignupScreen(
                 modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize(), viewModel = SignupViewModel()
+                    .fillMaxSize(), viewModel = SignupViewModel(),
+                onBackArrowClicked = {  }
             )
-        }
+//        }
     }
 }

@@ -3,7 +3,6 @@ package com.example.moneyroute.movements.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,8 +11,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
-import com.example.moneyroute.components.FloatingActionButtonWithMenu
-import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.movements.MovementList
 import com.example.moneyroute.movements.data.Movement
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
@@ -22,24 +19,7 @@ import com.example.moneyroute.ui.theme.MoneyRouteTheme
 fun MovementsScreen(
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        topBar = {
-            TitleTopBar(
-                title = stringResource(id = R.string.title_movements),
-                onBackArrowClick = { /* TODO: Regresar a la pantalla anterior */ }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButtonWithMenu(
-                onRegisterMovementClick = { /*TODO*/ },
-                onRegisterPeriodicMovementClick = {  },
-                modifier = Modifier.padding(start = 120.dp)
-            )
-        },
-        modifier = modifier,
-    ) { innerPadding ->
-        MovementsContent(modifier = Modifier.padding(innerPadding))
-    }
+    MovementsContent(modifier = modifier)
 }
 
 @Composable
@@ -73,6 +53,8 @@ fun MovementsContent(
 @Composable
 private fun MovementsScreenPreview() {
     MoneyRouteTheme {
-        MovementsScreen()
+        MovementsScreen(
+
+        )
     }
 }

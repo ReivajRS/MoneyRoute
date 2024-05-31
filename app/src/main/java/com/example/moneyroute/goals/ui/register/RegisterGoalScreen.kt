@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -27,36 +27,34 @@ import com.example.moneyroute.components.AddButton
 import com.example.moneyroute.components.AmountField
 import com.example.moneyroute.components.CustomDatePicker
 import com.example.moneyroute.components.RowElement
-import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterGoalScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterGoalViewModel
 ) {
-    Scaffold(
-        topBar = {
-            TitleTopBar(
-                title = stringResource(id = R.string.title_register_goal),
-                onBackArrowClick = { /* TODO: REGRESAR A LA PANTALLA ANTERIOR */ }
-            )
-        },
-        modifier = modifier
-    ) { innerPadding ->
+//    Scaffold(
+//        topBar = {
+//            TitleTopBar(
+//                title = stringResource(id = R.string.title_register_goal),
+//                onBackArrowClick = { /* TODO: REGRESAR A LA PANTALLA ANTERIOR */ }
+//            )
+//        },
+//        modifier = modifier
+//    ) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             RegisterGoal(
-                modifier = Modifier.padding(innerPadding),
                 viewModel = viewModel
             )
         }
-    }
+//    }
 }
 
 @Composable
@@ -68,7 +66,7 @@ fun RegisterGoal(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = modifier.padding(16.dp)
     ) {
         RowElement(text = stringResource(id = R.string.text_label)) {
             LabelField(

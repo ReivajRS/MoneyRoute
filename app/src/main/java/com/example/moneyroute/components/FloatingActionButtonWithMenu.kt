@@ -23,17 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.moneyroute.R
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
 @Composable
 fun FloatingActionButtonWithMenu(
     modifier: Modifier = Modifier,
-    onRegisterMovementClick: () -> Unit,
-    onRegisterPeriodicMovementClick: () -> Unit
+    fabOptions: List<FabOption>
 ) {
     var expanded by remember { mutableStateOf(false) }
     Column(
@@ -47,29 +44,22 @@ fun FloatingActionButtonWithMenu(
                     .padding(8.dp)
                     .clip(MaterialTheme.shapes.medium)
             ) {
-                Text(
-                    text = stringResource(id = R.string.title_register_movement),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            expanded = false
-                            onRegisterMovementClick()
-                        }
-                        .padding(8.dp)
-                )
-                HorizontalDivider()
-                Text(
-                    text = stringResource(id = R.string.title_register_periodic_movement),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            expanded = false
-                            onRegisterPeriodicMovementClick()
-                        }
-                        .padding(8.dp)
-                )
+                fabOptions.forEachIndexed { index, it ->
+                    Text(
+                        text = it.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                expanded = false
+                                it.onClick()
+                            }
+                            .padding(8.dp)
+                    )
+                    if (index % 2 == 0) {
+                        HorizontalDivider()
+                    }
+                }
             }
         }
         FloatingActionButton(
@@ -82,7 +72,6 @@ fun FloatingActionButtonWithMenu(
             )
         }
     }
-//    }
 }
 
 @Preview(showBackground = true)
@@ -90,8 +79,21 @@ fun FloatingActionButtonWithMenu(
 private fun FloatingActionButtonWithMenuPreview() {
     MoneyRouteTheme {
         FloatingActionButtonWithMenu(
-            onRegisterMovementClick = { /* TODO: CAMBIAR DE PANTALLA */ },
-            onRegisterPeriodicMovementClick = { /* TODO: CAMBIAR DE PANTALLA */ }
+            fabOptions = listOf(
+                FabOption(
+                    title = "Registrar movimiento",
+                    onClick = {  }
+                ),
+                FabOption(
+                    title = "Registrar periodico",
+                    onClick = {  }
+                )
+            )
         )
     }
 }
+
+data class FabOption(
+    val title: String,
+    val onClick: () -> Unit
+)

@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,35 +24,35 @@ import com.example.moneyroute.components.AddButton
 import com.example.moneyroute.components.AmountField
 import com.example.moneyroute.components.CustomDatePicker
 import com.example.moneyroute.components.RowElement
-import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContributeGoalScreen(
     modifier: Modifier = Modifier,
     viewModel: ContributeGoalViewModel
 ) {
-    Scaffold(
-        topBar = {
-            TitleTopBar(
-                title = stringResource(id = R.string.title_contribute_goal),
-                onBackArrowClick = { /* TODO: REGRESAR A LA PANTALLA ANTERIOR */ })
-        },
-        modifier = modifier
-    ) { innerPadding ->
+//    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+//    Scaffold(
+//        topBar = {
+//            TitleTopBar(
+//                title = stringResource(id = R.string.title_contribute_goal),
+//                onBackArrowClick = { /* TODO: REGRESAR A LA PANTALLA ANTERIOR */ })
+//        },
+//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+//    ) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             ContributeGoal(
-                modifier = modifier.padding(innerPadding),
+                modifier = Modifier,
                 viewModel = viewModel
             )
         }
-    }
+//    }
 }
 
 @Composable
