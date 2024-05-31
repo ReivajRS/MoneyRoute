@@ -30,10 +30,19 @@
     <string name="text_latest_movements">Últimos movimientos</string>
     <string name="text_movements_list">Lista de movimientos</string>
     <string name="text_goals_list">Lista de metas</string>
+    <string name="text_start">Inicio</string>
+    <string name="text_end">Fin</string>
+    <string name="text_filter_by_date">Filtrar por fecha</string>
+    <string name="title_login">Iniciar sesión</string>
+    <string name="title_register_account">Registrar cuenta</string>
     <string name="title_movements">Movimientos</string>
     <string name="title_register_movement">Registrar movimiento</string>
     <string name="title_register_periodic_movement">Registrar movimiento periódico</string>
     <string name="title_goals">Metas</string>
     <string name="title_register_goal">Registrar meta</string>
     <string name="title_contribute_goal">Abonar meta</string>
+    <string name="title_queries">Consultas</string>
+    <string name="error_date_range_invalid">La fecha de fin debe ser mayor a la fecha de inicio</string>
+    <string name="toast_signup_successfully">Registro realizado correctamente</string>
+    <string name="toast_login_successfully">Sesión iniciada correctamente</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.example.moneyroute.signup.ui
 
-import android.util.Log
+import android.content.Context
 import android.util.Patterns
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.moneyroute.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -34,8 +36,8 @@ class SignupViewModel : ViewModel() {
         _signupEnable.value = firstName.isNotBlank() && lastName.isNotBlank() && isValidEmail(email) && isValidPassword(password) && isSamePassword(password, confirmPassword)
     }
 
-    fun onSignupClicked() {
-
+    fun onSignupClicked(context: Context) {
+        Toast.makeText(context, R.string.toast_signup_successfully, Toast.LENGTH_SHORT).show()
     }
 
     private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()

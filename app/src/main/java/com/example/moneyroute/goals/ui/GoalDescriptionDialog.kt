@@ -1,6 +1,5 @@
 package com.example.moneyroute.goals.ui
 
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -53,7 +52,7 @@ fun GoalDescriptionDialog(
 
 @Preview(showBackground = true)
 @Composable
-fun GoalDescriptionDialogPreview() {
+private fun GoalDescriptionDialogPreview() {
     GoalDescriptionDialog(
         goal = Goal(
             label = "Meta 1: Skibidi dob dob dob dob yes yes yes yes skibidi dib dib dib dib",

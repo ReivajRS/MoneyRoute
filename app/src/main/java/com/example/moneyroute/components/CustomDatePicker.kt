@@ -1,6 +1,5 @@
 package com.example.moneyroute.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
@@ -27,16 +26,19 @@ import com.example.moneyroute.utilities.Utilities
 @Composable
 fun CustomDatePicker(
     modifier: Modifier = Modifier,
+    placeholder: String = stringResource(R.string.text_select),
+    enable: Boolean = true,
     selectedDate: Long?,
     onDateSelected: (Long?) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var dateString by remember { mutableStateOf("") }
 
-    // TODO: PASAR LA LOGICA DE CONVERTIR LA FECHA AL LUGAR ADECUADO
     if (selectedDate != null) {
         val localDate = Utilities.convertDateFromEpochMilliToLocalDate(selectedDate)
         dateString = Utilities.getFormattedDate(localDate)
+    } else {
+        dateString = ""
     }
 
     OutlinedTextField(
@@ -45,14 +47,15 @@ fun CustomDatePicker(
         singleLine = true,
         readOnly = true,
         placeholder = {
-            Text(text = stringResource(id = R.string.text_select))
+            Text(text = placeholder)
         },
         trailingIcon = {
-            IconButton(onClick = { showDialog = true }) {
+            IconButton(onClick = { showDialog = true }, enabled = enable) {
                 Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Select a date")
             }
         },
-        modifier = modifier.fillMaxWidth()
+        enabled = enable,
+        modifier = modifier
     )
 
     if (showDialog) {

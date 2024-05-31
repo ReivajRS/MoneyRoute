@@ -1,8 +1,10 @@
 package com.example.moneyroute.login.ui
 
+import android.content.Context
 import android.util.Patterns
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.delay
+import com.example.moneyroute.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -26,10 +28,8 @@ class LoginViewModel : ViewModel() {
         _loginEnable.value = isValidEmail(email) && isValidPassword(password)
     }
 
-    suspend fun onLoginClicked() {
-        _isLoading.value = true
-        delay(4000)
-        _isLoading.value = false
+    fun onLoginClicked(context: Context) {
+        Toast.makeText(context, R.string.toast_login_successfully, Toast.LENGTH_SHORT).show()
     }
 
     private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()

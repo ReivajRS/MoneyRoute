@@ -1,6 +1,5 @@
 package com.example.moneyroute.signup.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,20 +29,35 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
+import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
 @Composable
-fun SignupScreen(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Signup(
-            modifier = Modifier.align(Alignment.Center),
-            viewModel = viewModel
-        )
+fun SignupScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SignupViewModel
+) {
+    Scaffold(
+        topBar = {
+            TitleTopBar(
+                title = stringResource(id = R.string.button_signup),
+                backButton = false
+            )
+        },
+        modifier = modifier
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Signup(
+                modifier = Modifier.align(Alignment.Center),
+                viewModel = viewModel
+            )
+        }
     }
 }
 
@@ -55,6 +69,7 @@ fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
     val password: String by viewModel.password.collectAsState()
     val confirmPassword: String by viewModel.confirmPassword.collectAsState()
     val signupEnable: Boolean by viewModel.signupEnable.collectAsState()
+    val context = LocalContext.current
 
     Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
@@ -90,7 +105,7 @@ fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
                 .fillMaxWidth()
                 .height(48.dp),
             signupEnable = signupEnable,
-            onSignupClicked = { viewModel.onSignupClicked() }
+            onSignupClicked = { viewModel.onSignupClicked(context) }
         )
     }
 }
@@ -100,7 +115,7 @@ fun HeaderImage(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.no_bg_logo),
         contentDescription = "Application logo",
-        modifier = modifier.size(250.dp)
+        modifier = modifier.size(200.dp)
     )
 }
 
@@ -165,12 +180,14 @@ fun ConfirmPasswordField(modifier: Modifier = Modifier, confirmPassword: String,
 }
 
 @Composable
-fun SignupButton(modifier: Modifier = Modifier, signupEnable: Boolean, onSignupClicked: () -> Unit) {
-    val context = LocalContext.current
+fun SignupButton(
+    modifier: Modifier = Modifier,
+    signupEnable: Boolean,
+    onSignupClicked: () -> Unit
+) {
     Button(
         onClick = {
-            onSignupClicked();
-            Toast.makeText(context, "Registro realizado correctamente", Toast.LENGTH_SHORT).show()
+            onSignupClicked()
         },
         enabled = signupEnable,
         modifier = modifier

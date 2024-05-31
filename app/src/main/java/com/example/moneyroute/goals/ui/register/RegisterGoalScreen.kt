@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
@@ -30,6 +27,7 @@ import com.example.moneyroute.components.AddButton
 import com.example.moneyroute.components.AmountField
 import com.example.moneyroute.components.CustomDatePicker
 import com.example.moneyroute.components.RowElement
+import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
 @Composable
@@ -37,45 +35,28 @@ fun RegisterGoalScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterGoalViewModel
 ) {
-    MoneyRouteTheme {
-        Scaffold(
-            topBar = { RegisterGoalTopBar() }
-        ) { innerPadding ->
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                RegisterGoal(
-                    modifier = modifier.padding(innerPadding),
-                    viewModel = viewModel
-                )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun RegisterGoalTopBar(
-    modifier: Modifier = Modifier,
-) {
-    TopAppBar(
-        title = {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.title_register_goal),
-                    fontWeight = FontWeight.Bold
-                )
-            }
+    Scaffold(
+        topBar = {
+            TitleTopBar(
+                title = stringResource(id = R.string.title_register_goal),
+                onBackArrowClick = { /* TODO: REGRESAR A LA PANTALLA ANTERIOR */ }
+            )
         },
         modifier = modifier
-    )
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            RegisterGoal(
+                modifier = Modifier.padding(innerPadding),
+                viewModel = viewModel
+            )
+        }
+    }
 }
 
 @Composable
@@ -175,23 +156,8 @@ fun DescriptionField(
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun RegisterGoalScreenPreview() {
+private fun RegisterGoalScreenPreview() {
     MoneyRouteTheme {
-        Scaffold(
-            topBar = { RegisterGoalTopBar() }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                RegisterGoal(
-                    modifier = Modifier.padding(innerPadding),
-                    viewModel = RegisterGoalViewModel()
-                )
-            }
-        }
+        RegisterGoalScreen(viewModel = RegisterGoalViewModel())
     }
 }

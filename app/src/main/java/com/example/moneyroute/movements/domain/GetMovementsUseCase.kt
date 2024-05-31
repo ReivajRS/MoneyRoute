@@ -1,37 +1,10 @@
-package com.example.moneyroute.movements
+package com.example.moneyroute.movements.domain
 
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.moneyroute.movements.data.Movement
 import com.example.moneyroute.movements.data.Periodicity
 import com.example.moneyroute.movements.data.RepetitionType
 
-@Composable
-fun MovementList(
-    modifier: Modifier = Modifier,
-    movementList: List<Movement>
-) {
-    var selectedMovement: Movement? by remember { mutableStateOf(null) }
-    LazyColumn(modifier = modifier) {
-        items(movementList) { movement ->
-            MovementCard(movement = movement, onCardClick = { selectedMovement = movement })
-        }
-    }
-    selectedMovement?.let {
-        MovementDescriptionDialog(movement = it, onDismiss = { selectedMovement = null })
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MovementListPreview() {
+class GetMovementsUseCase() {
     val movements = listOf(
         Movement(
             type = "Ingreso",
@@ -78,5 +51,6 @@ private fun MovementListPreview() {
             )
         )
     )
-    MovementList(movementList = movements)
+
+    suspend operator fun invoke(): List<Movement> = movements
 }
