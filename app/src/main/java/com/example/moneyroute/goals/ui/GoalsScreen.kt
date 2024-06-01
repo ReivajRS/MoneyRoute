@@ -32,14 +32,14 @@ fun GoalsContent(
 //        )
         // TODO: QUITAR
         GoalList(goalList = listOf(
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
-            Goal("Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
+            Goal("", "", "Meta ---", 15.0, 100.0, 1000000000000, 1500000000000, "Descripcion random", "Activa"),
             )
         )
     }

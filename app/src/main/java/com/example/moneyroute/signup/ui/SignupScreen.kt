@@ -19,6 +19,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,40 +31,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
+import com.example.moneyroute.utilities.AuthManager
+import com.example.moneyroute.utilities.FirebaseManager
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupScreen(
     modifier: Modifier = Modifier,
     viewModel: SignupViewModel,
+    authManager: AuthManager,
+    firebaseManager: FirebaseManager,
     onBackArrowClicked: () -> Unit
 ) {
-//    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-//    Scaffold(
-//        topBar = {
-//            TitleTopBar(
-//                title = stringResource(id = R.string.button_signup),
-//                onBackArrowClick = onBackArrowClicked
-//            )
-//        },
-//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-//    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Signup(
-                modifier = Modifier.align(Alignment.Center),
-                viewModel = viewModel
-            )
-        }
-//    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Signup(
+            modifier = Modifier.align(Alignment.Center),
+            viewModel = viewModel,
+            authManager = authManager,
+            firebaseManager = firebaseManager
+        )
+    }
 }
 
 @Composable
-fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
+fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel, authManager: AuthManager, firebaseManager: FirebaseManager) {
     val firstName: String by viewModel.firstName.collectAsState()
     val lastName: String by viewModel.lastName.collectAsState()
     val email: String by viewModel.email.collectAsState()
@@ -71,6 +66,7 @@ fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
     val confirmPassword: String by viewModel.confirmPassword.collectAsState()
     val signupEnable: Boolean by viewModel.signupEnable.collectAsState()
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
@@ -106,7 +102,14 @@ fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
                 .fillMaxWidth()
                 .height(48.dp),
             signupEnable = signupEnable,
-            onSignupClicked = { viewModel.onSignupClicked(context) }
+            onSignupClicked = {
+                viewModel.onSignupClicked(
+                    context = context,
+                    authManager = authManager,
+                    firebaseManager = firebaseManager,
+                    scope = coroutineScope
+                )
+            }
         )
     }
 }
@@ -197,16 +200,16 @@ fun SignupButton(
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun SignupScreenPreview() {
-    MoneyRouteTheme {
-//        Scaffold { innerPadding ->
-            SignupScreen(
-                modifier = Modifier
-                    .fillMaxSize(), viewModel = SignupViewModel(),
-                onBackArrowClicked = {  }
-            )
-//        }
-    }
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun SignupScreenPreview() {
+//    MoneyRouteTheme {
+////        Scaffold { innerPadding ->
+//            SignupScreen(
+//                modifier = Modifier
+//                    .fillMaxSize(), viewModel = SignupViewModel(),
+//                onBackArrowClicked = {  }
+//            )
+////        }
+//    }
+//}

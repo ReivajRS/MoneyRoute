@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,7 @@ import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.goals.ui.GoalsScreen
 import com.example.moneyroute.goals.ui.contribute.ContributeGoalScreen
 import com.example.moneyroute.goals.ui.contribute.ContributeGoalViewModel
+import com.example.moneyroute.goals.ui.register.RegisterGoalScreen
 import com.example.moneyroute.goals.ui.register.RegisterGoalViewModel
 import com.example.moneyroute.login.ui.LoginScreen
 import com.example.moneyroute.login.ui.LoginViewModel
@@ -45,6 +47,8 @@ import com.example.moneyroute.queries.ui.QueriesViewModel
 import com.example.moneyroute.signup.ui.SignupScreen
 import com.example.moneyroute.signup.ui.SignupViewModel
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
+import com.example.moneyroute.utilities.AuthManager
+import com.example.moneyroute.utilities.FirebaseManager
 
 class MainActivity : ComponentActivity() {
 
@@ -106,7 +110,7 @@ fun MainScreen(
                 }
                 Screen.Home.route -> {
                     TitleTopBar(
-                        title = stringResource(id = R.string.title_movements),
+                        title = stringResource(id = R.string.app_name),
                         backButton = false,
                         onBackArrowClick = { }
                     )
@@ -194,6 +198,9 @@ fun MainScreen(
             }
         }
     ) { innerPadding ->
+        val authManager = AuthManager(LocalContext.current)
+        val firebaseManager = FirebaseManager(context = LocalContext.current)
+
         NavHost(
             navController = navController,
             startDestination = Screen.Login,
@@ -202,6 +209,8 @@ fun MainScreen(
             composable<Screen.Login> {
                 LoginScreen(
                     viewModel = loginViewModel,
+                    authManager = authManager,
+                    navController = navController,
                     onLoginSuccess = { navController.navigate(HomeGraph) },
                     onWantToRegisterClicked = { navController.navigate(Screen.Signup) }
                 )
@@ -209,6 +218,8 @@ fun MainScreen(
             composable<Screen.Signup> {
                 SignupScreen(
                     viewModel = signupViewModel,
+                    authManager = authManager,
+                    firebaseManager = firebaseManager,
                     onBackArrowClicked = {
                         navController.popBackStack(route = Screen.Login, inclusive = false)
                     }
@@ -219,12 +230,13 @@ fun MainScreen(
                     HomeScreen()
                 }
                 composable<Screen.Movements> {
-                    MovementsScreen()
+                    MovementsScreen(firebaseManager = firebaseManager)
                 }
                 composable<Screen.RegisterMovement> {
                     val args = it.toRoute<Screen.RegisterMovement>()
                     RegisterMovementScreen(
                         viewModel = registerMovementViewModel,
+                        firebaseManager = firebaseManager,
                         isPeriodical = args.isPeriodical
                     )
                 }
@@ -233,8 +245,12 @@ fun MainScreen(
                         registerGoalViewModel = registerGoalViewModel,
                     )
                 }
+                composable<Screen.RegisterGoal> {
+                    RegisterGoalScreen(
+                        viewModel = registerGoalViewModel
+                    )
+                }
                 composable<Screen.ContributeGoal> {
-//                    val args = it.toRoute<ContributeGoal>()
                     ContributeGoalScreen(
                         viewModel = contributeGoalViewModel
                     )
@@ -273,19 +289,5 @@ fun BottomNavigationBar(
                 label = { Text(text = item.title) }
             )
         }
-    }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-private fun MainScreenPreview() {
-    MoneyRouteTheme {
-        LoginScreen(
-            modifier = Modifier
-                .fillMaxSize(),
-            viewModel = LoginViewModel(),
-            onLoginSuccess = { },
-            onWantToRegisterClicked = { }
-        )
     }
 }

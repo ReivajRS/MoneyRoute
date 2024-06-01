@@ -21,7 +21,7 @@ sealed class BottomNavigationItem(
 ) {
     // TODO: VER PARA CAMBIAR LOS NOMBRES
     data object HomeItem : BottomNavigationItem(
-        title = "HomeItem",
+        title = "Inicio",
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
         route = Screen.Home

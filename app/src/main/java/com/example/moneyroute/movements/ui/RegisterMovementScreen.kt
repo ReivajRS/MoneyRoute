@@ -26,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,76 +42,43 @@ import com.example.moneyroute.components.CustomDatePicker
 import com.example.moneyroute.components.RowElement
 import com.example.moneyroute.movements.data.Periodicity
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
+import com.example.moneyroute.utilities.FirebaseManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterMovementScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterMovementViewModel,
+    firebaseManager: FirebaseManager,
     isPeriodical: Boolean
 ) {
-//    Scaffold(
-//        topBar = { RegisterMovementTopBar(isPeriodical = isPeriodical) },
-//        modifier = modifier
-//    ) { innerPadding ->
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            RegisterMovement(
-                isPeriodicMovement = isPeriodical,
-                viewModel = viewModel
-            )
-//        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun RegisterMovementTopBar(
-    modifier: Modifier = Modifier,
-    isPeriodicMovement: Boolean
-) {
-    TopAppBar(
-        title = {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                IconButton(
-                    onClick = { /*TODO: IR A LA PANTALLA PREVIA*/ },
-                    modifier = modifier.align(Alignment.TopStart)
-                ) {
-                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Go back")
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = "\n${stringResource(
-                            id = if (isPeriodicMovement) R.string.title_register_periodic_movement
-                    else R.string.title_register_movement
-                )
-            }",
-                    fontWeight = FontWeight.Bold,
-                    modifier = modifier.align(Alignment.Center)
-                )
-            }
-        },
+    Box(
         modifier = modifier
-    )
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        RegisterMovement(
+            isPeriodicMovement = isPeriodical,
+            viewModel = viewModel,
+            firebaseManager = firebaseManager
+        )
+    }
 }
 
 @Composable
 fun RegisterMovement(
     modifier: Modifier = Modifier,
     isPeriodicMovement: Boolean,
-    viewModel: RegisterMovementViewModel
+    viewModel: RegisterMovementViewModel,
+    firebaseManager: FirebaseManager
 ) {
     val movementState: MovementState by viewModel.movementState.collectAsState()
     val movementTypes: List<String> by viewModel.movementTypes.collectAsState()
     val categories: List<String> by viewModel.categories.collectAsState()
     val periodicities: List<Periodicity> by viewModel.periodicities.collectAsState()
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -195,7 +163,7 @@ fun RegisterMovement(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .width(160.dp),
-            onAddClicked = { viewModel.onAddClicked(context) }
+            onAddClicked = { viewModel.onAddClicked(context, firebaseManager, coroutineScope) }
         )
     }
 }
@@ -349,15 +317,15 @@ fun DescriptionField(
         modifier = modifier
     )
 }
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun RegisterMovementScreenPreview() {
-    val isPeriodicMovement = true
-    MoneyRouteTheme {
-        RegisterMovementScreen(
-            viewModel = RegisterMovementViewModel(),
-            isPeriodical = isPeriodicMovement
-        )
-    }
-}
+//
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun RegisterMovementScreenPreview() {
+//    val isPeriodicMovement = true
+//    MoneyRouteTheme {
+//        RegisterMovementScreen(
+//            viewModel = RegisterMovementViewModel(),
+//            isPeriodical = isPeriodicMovement
+//        )
+//    }
+//}

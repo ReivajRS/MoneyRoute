@@ -5,8 +5,14 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.moneyroute.R
+import com.example.moneyroute.signup.data.User
+import com.example.moneyroute.utilities.AuthManager
+import com.example.moneyroute.utilities.AuthRes
+import com.example.moneyroute.utilities.FirebaseManager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class SignupViewModel : ViewModel() {
     private val _firstName = MutableStateFlow("")
@@ -36,8 +42,27 @@ class SignupViewModel : ViewModel() {
         _signupEnable.value = firstName.isNotBlank() && lastName.isNotBlank() && isValidEmail(email) && isValidPassword(password) && isSamePassword(password, confirmPassword)
     }
 
-    fun onSignupClicked(context: Context) {
-        Toast.makeText(context, R.string.toast_signup_successfully, Toast.LENGTH_SHORT).show()
+    fun onSignupClicked(context: Context, authManager: AuthManager, firebaseManager: FirebaseManager, scope: CoroutineScope) {
+        scope.launch {
+            val result = authManager.createUserWithEmailAndPassword(_email.value, _password.value)
+            when (result){
+                is AuthRes.Success -> {
+                    Toast.makeText(context, R.string.toast_signup_successfully, Toast.LENGTH_SHORT).show()
+                }
+                is AuthRes.Error -> {
+                    Toast.makeText(context, result.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+            firebaseManager.addUser(
+                User(
+                    id = firebaseManager.userId!!,
+                    email = _email.value,
+                    password = _password.value,
+                    firstName = _firstName.value,
+                    lastName = _lastName.value
+                )
+            )
+        }
     }
 
     private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()

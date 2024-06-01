@@ -3,10 +3,12 @@ package com.example.moneyroute.movements.ui
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.moneyroute.movements.data.Movement
 import com.example.moneyroute.movements.domain.GetCategoriesUseCase
 import com.example.moneyroute.movements.domain.GetMovementTypesUseCase
 import com.example.moneyroute.movements.domain.GetPeriodicitiesUseCase
 import com.example.moneyroute.movements.data.Periodicity
+import com.example.moneyroute.utilities.FirebaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -85,8 +87,18 @@ class RegisterMovementViewModel(
         _movementState.value = _movementState.value.copy(description = description)
     }
 
-    fun onAddClicked(context: Context) {
-        // TODO: VALIDAR LO INGRESADO Y AGREGAR A LA BD
+    fun onAddClicked(context: Context, firebaseManager: FirebaseManager, scope: CoroutineScope) {
+        scope.launch {
+            firebaseManager.addMovement(
+                movement = Movement(
+                    type =_movementState.value.movementType,
+                    amount = _movementState.value.amount.toDouble(),
+                    category = _movementState.value.category,
+                    date = _movementState.value.date!!,
+                    description = _movementState.value.description,
+                )
+            )
+        }
         Toast.makeText(context, "Movimiento registrado exitosamente", Toast.LENGTH_SHORT).show()
     }
 }
