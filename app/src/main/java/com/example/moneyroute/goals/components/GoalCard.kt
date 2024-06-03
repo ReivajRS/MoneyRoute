@@ -1,4 +1,4 @@
-package com.example.moneyroute.goals.ui
+package com.example.moneyroute.goals.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,7 +27,6 @@ import com.example.moneyroute.goals.data.Goal
 import com.example.moneyroute.utilities.Utilities
 import com.example.moneyroute.utilities.Utilities.convertDateFromEpochMilliToLocalDate
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GoalCard(
     modifier: Modifier = Modifier,
@@ -60,8 +60,9 @@ fun GoalCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             LinearProgressIndicator(
-                progress = (goal.currentAmount / goal.goalAmount).toFloat(),
+                progress = { (goal.currentAmount / goal.goalAmount).toFloat() },
                 modifier = Modifier.fillMaxWidth(),
+                strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -109,7 +110,7 @@ fun AmountsRow(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = currentAmount.toString(),
+                text = "$${currentAmount}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -120,7 +121,7 @@ fun AmountsRow(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = goalAmount.toString(),
+                text = "$${goalAmount}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }

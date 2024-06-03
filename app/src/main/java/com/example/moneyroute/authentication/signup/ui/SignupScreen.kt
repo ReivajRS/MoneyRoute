@@ -1,4 +1,4 @@
-package com.example.moneyroute.signup.ui
+package com.example.moneyroute.authentication.signup.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -13,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,30 +25,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
-import com.example.moneyroute.ui.theme.MoneyRouteTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupScreen(
     modifier: Modifier = Modifier,
     viewModel: SignupViewModel,
-    onBackArrowClicked: () -> Unit
 ) {
-//    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-//    Scaffold(
-//        topBar = {
-//            TitleTopBar(
-//                title = stringResource(id = R.string.button_signup),
-//                onBackArrowClick = onBackArrowClicked
-//            )
-//        },
-//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-//    ) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
@@ -59,7 +44,6 @@ fun SignupScreen(
                 viewModel = viewModel
             )
         }
-//    }
 }
 
 @Composable
@@ -194,19 +178,5 @@ fun SignupButton(
         modifier = modifier
     ) {
         Text(text = stringResource(id = R.string.button_signup))
-    }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun SignupScreenPreview() {
-    MoneyRouteTheme {
-//        Scaffold { innerPadding ->
-            SignupScreen(
-                modifier = Modifier
-                    .fillMaxSize(), viewModel = SignupViewModel(),
-                onBackArrowClicked = {  }
-            )
-//        }
     }
 }

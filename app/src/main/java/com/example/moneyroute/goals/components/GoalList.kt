@@ -1,4 +1,4 @@
-package com.example.moneyroute.goals.ui
+package com.example.moneyroute.goals.components
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,18 +14,20 @@ import com.example.moneyroute.goals.data.Goal
 @Composable
 fun GoalList(
     modifier: Modifier = Modifier,
-    goalList: List<Goal>
+    goalList: List<Goal>,
+    onContributeClicked: (Goal) -> Unit
 ) {
-    // TODO: MAYBE METERLO A UN VIEWMODEL
     var selectedGoal: Goal? by remember { mutableStateOf(null) }
     LazyColumn(modifier = modifier) {
         items(goalList) { goal ->
             GoalCard(goal = goal, onCardClick = { selectedGoal = goal })
         }
     }
-
-    selectedGoal?.let {
-        GoalDescriptionDialog(goal = it, onDismiss = { selectedGoal = null })
+    selectedGoal?.let { goal ->
+        GoalDescriptionDialog(
+            goal = goal,
+            onDismiss = { selectedGoal = null },
+            onContribute = { onContributeClicked(goal) })
     }
 }
 
@@ -88,5 +90,5 @@ private fun GoalListPreview() {
             status = "No iniciado"
         )
     )
-    GoalList(goalList = goals)
+    GoalList(goalList = goals, onContributeClicked = { })
 }

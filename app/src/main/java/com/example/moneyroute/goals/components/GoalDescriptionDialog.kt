@@ -1,4 +1,4 @@
-package com.example.moneyroute.goals.ui
+package com.example.moneyroute.goals.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,11 +24,21 @@ fun GoalDescriptionDialog(
     modifier: Modifier = Modifier,
     goal: Goal,
     onDismiss: () -> Unit,
+    onContribute: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            Button(onClick = onDismiss) {
+            Button(
+                onClick = {
+                    onDismiss()
+                    onContribute()
+                }) {
+                Text(text = stringResource(R.string.text_contribute))
+            }
+        },
+        dismissButton = {
+            OutlinedButton(onClick = onDismiss) {
                 Text(text = stringResource(id = R.string.button_close))
             }
         },
@@ -63,6 +74,7 @@ private fun GoalDescriptionDialogPreview() {
             description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             status = "Activa"
         ),
-        onDismiss = {}
+        onDismiss = {},
+        onContribute = {}
     )
 }

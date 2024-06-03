@@ -3,38 +3,36 @@ package com.example.moneyroute
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.moneyroute.authentication.login.ui.LoginScreen
+import com.example.moneyroute.authentication.login.ui.LoginViewModel
+import com.example.moneyroute.authentication.signup.ui.SignupScreen
+import com.example.moneyroute.authentication.signup.ui.SignupViewModel
+import com.example.moneyroute.components.BottomNavigationBar
 import com.example.moneyroute.components.FabOption
 import com.example.moneyroute.components.FloatingActionButtonWithMenu
 import com.example.moneyroute.components.TitleTopBar
 import com.example.moneyroute.goals.ui.GoalsScreen
+import com.example.moneyroute.goals.ui.GoalsViewModel
 import com.example.moneyroute.goals.ui.contribute.ContributeGoalScreen
 import com.example.moneyroute.goals.ui.contribute.ContributeGoalViewModel
+import com.example.moneyroute.goals.ui.register.RegisterGoalScreen
 import com.example.moneyroute.goals.ui.register.RegisterGoalViewModel
-import com.example.moneyroute.login.ui.LoginScreen
-import com.example.moneyroute.login.ui.LoginViewModel
 import com.example.moneyroute.movements.ui.MovementsScreen
+import com.example.moneyroute.movements.ui.MovementsViewModel
 import com.example.moneyroute.movements.ui.RegisterMovementScreen
 import com.example.moneyroute.movements.ui.RegisterMovementViewModel
 import com.example.moneyroute.navigation.HomeGraph
@@ -42,109 +40,80 @@ import com.example.moneyroute.navigation.NavigationBarViewModel
 import com.example.moneyroute.navigation.Screen
 import com.example.moneyroute.queries.ui.QueriesScreen
 import com.example.moneyroute.queries.ui.QueriesViewModel
-import com.example.moneyroute.signup.ui.SignupScreen
-import com.example.moneyroute.signup.ui.SignupViewModel
 import com.example.moneyroute.ui.theme.MoneyRouteTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val loginViewModel by viewModels<LoginViewModel>()
-    private val signupViewModel by viewModels<SignupViewModel>()
-    private val registerMovementViewModel by viewModels<RegisterMovementViewModel>()
-    private val registerGoalViewModel by viewModels<RegisterGoalViewModel>()
-    private val contributeGoalViewModel by viewModels<ContributeGoalViewModel>()
-    private val queriesViewModel by viewModels<QueriesViewModel>()
-    private val navigationBarViewModel by viewModels<NavigationBarViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MoneyRouteTheme {
-                MainScreen(
-                    loginViewModel = loginViewModel,
-                    signupViewModel = signupViewModel,
-                    registerMovementViewModel = registerMovementViewModel,
-                    registerGoalViewModel = registerGoalViewModel,
-                    contributeGoalViewModel =  contributeGoalViewModel,
-                    queriesViewModel = queriesViewModel,
-                    navigationBarViewModel = navigationBarViewModel
-                )
+                MainScreen()
             }
         }
     }
 }
 
 @Composable
-fun MainScreen(
-    loginViewModel: LoginViewModel,
-    signupViewModel: SignupViewModel,
-    registerMovementViewModel: RegisterMovementViewModel,
-    registerGoalViewModel: RegisterGoalViewModel,
-    contributeGoalViewModel: ContributeGoalViewModel,
-    queriesViewModel: QueriesViewModel,
-    navigationBarViewModel: NavigationBarViewModel
-) {
+fun MainScreen() {
+    val navigationBarViewModel = viewModel<NavigationBarViewModel>()
+
     val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination?.route
-
     Scaffold(
         topBar = {
             when (currentDestination) {
                 Screen.Login.route -> {
-                    TitleTopBar(
-                        title = stringResource(id = R.string.title_login),
-                        backButton = false,
-                        onBackArrowClick = { }
-                    )
+                    TitleTopBar(title = stringResource(id = R.string.title_login))
                 }
+
                 Screen.Signup.route -> {
                     TitleTopBar(
                         title = stringResource(id = R.string.button_signup),
-                        backButton = false,
-                        onBackArrowClick = { }
+                        backButton = true,
+                        onBackArrowClick = { navController.popBackStack(Screen.Login, false) }
                     )
                 }
+
                 Screen.Home.route -> {
-                    TitleTopBar(
-                        title = stringResource(id = R.string.title_movements),
-                        backButton = false,
-                        onBackArrowClick = { }
-                    )
+                    TitleTopBar(title = stringResource(id = R.string.app_name))
                 }
+
+                Screen.Movements.route -> {
+                    TitleTopBar(title = stringResource(id = R.string.title_movements))
+                }
+
                 Screen.RegisterMovement.route -> {
                     TitleTopBar(
                         title = stringResource(id = R.string.title_register_movement),
                         backButton = true,
-                        onBackArrowClick = { }
+                        onBackArrowClick = { navController.popBackStack(Screen.Movements, false) }
                     )
                 }
+
                 Screen.Goals.route -> {
-                    TitleTopBar(
-                        title = stringResource(id = R.string.title_goals),
-                        backButton = false,
-                        onBackArrowClick = { }
-                    )
+                    TitleTopBar(title = stringResource(id = R.string.title_goals))
                 }
+
                 Screen.RegisterGoal.route -> {
                     TitleTopBar(
                         title = stringResource(id = R.string.title_register_goal),
                         backButton = true,
-                        onBackArrowClick = { }
+                        onBackArrowClick = { navController.popBackStack(Screen.Goals, false) }
                     )
                 }
+
                 Screen.ContributeGoal.route -> {
                     TitleTopBar(
                         title = stringResource(id = R.string.title_contribute_goal),
                         backButton = true,
-                        onBackArrowClick = { }
+                        onBackArrowClick = { navController.popBackStack(Screen.Goals, false) }
                     )
                 }
+
                 Screen.Queries.route -> {
-                    TitleTopBar(
-                        title = stringResource(id = R.string.title_queries),
-                        backButton = false,
-                        onBackArrowClick = { }
-                    )
+                    TitleTopBar(title = stringResource(id = R.string.title_queries))
                 }
                 // TODO: AGREGAR LA OPCION DE CUENTA
             }
@@ -156,16 +125,29 @@ fun MainScreen(
                         fabOptions = listOf(
                             FabOption(
                                 title = stringResource(id = R.string.title_register_movement),
-                                onClick = { navController.navigate(Screen.RegisterMovement(isPeriodical = false)) }
+                                onClick = {
+                                    navController.navigate(
+                                        Screen.RegisterMovement(
+                                            isPeriodical = false
+                                        )
+                                    )
+                                }
                             ),
                             FabOption(
                                 title = stringResource(id = R.string.title_register_periodic_movement),
-                                onClick = { navController.navigate(Screen.RegisterMovement(isPeriodical = true)) }
+                                onClick = {
+                                    navController.navigate(
+                                        Screen.RegisterMovement(
+                                            isPeriodical = true
+                                        )
+                                    )
+                                }
                             )
                         ),
                         modifier = Modifier.padding(start = 160.dp)
                     )
                 }
+
                 Screen.Goals.route -> {
                     FloatingActionButtonWithMenu(
                         fabOptions = listOf(
@@ -200,18 +182,19 @@ fun MainScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable<Screen.Login> {
+                val loginViewModel: LoginViewModel = hiltViewModel()
                 LoginScreen(
                     viewModel = loginViewModel,
-                    onLoginSuccess = { navController.navigate(HomeGraph) },
+                    onLoginClicked = { result ->
+                        if (result) { navController.navigate(HomeGraph) }
+                    },
                     onWantToRegisterClicked = { navController.navigate(Screen.Signup) }
                 )
             }
             composable<Screen.Signup> {
+                val signupViewModel: SignupViewModel = hiltViewModel()
                 SignupScreen(
-                    viewModel = signupViewModel,
-                    onBackArrowClicked = {
-                        navController.popBackStack(route = Screen.Login, inclusive = false)
-                    }
+                    viewModel = signupViewModel
                 )
             }
             navigation<HomeGraph>(startDestination = Screen.Home) {
@@ -219,73 +202,67 @@ fun MainScreen(
                     HomeScreen()
                 }
                 composable<Screen.Movements> {
-                    MovementsScreen()
+                    val movementsViewModel: MovementsViewModel = hiltViewModel()
+                    MovementsScreen(viewModel = movementsViewModel)
                 }
                 composable<Screen.RegisterMovement> {
                     val args = it.toRoute<Screen.RegisterMovement>()
+                    val registerMovementViewModel: RegisterMovementViewModel = hiltViewModel()
                     RegisterMovementScreen(
                         viewModel = registerMovementViewModel,
                         isPeriodical = args.isPeriodical
                     )
                 }
                 composable<Screen.Goals> {
+                    val goalsViewModel: GoalsViewModel = hiltViewModel()
                     GoalsScreen(
-                        registerGoalViewModel = registerGoalViewModel,
+                        viewModel = goalsViewModel,
+                        onContributeClicked = { goal ->
+                            navController.navigate(
+                                Screen.ContributeGoal(
+                                    goalId = goal.id,
+                                    goalLabel = goal.label,
+                                    remainingAmount = (goal.goalAmount - goal.currentAmount).toString()
+                                )
+                            )
+                        }
+                    )
+                }
+                composable<Screen.RegisterGoal> {
+                    val registerGoalViewModel: RegisterGoalViewModel = hiltViewModel()
+                    RegisterGoalScreen(
+                        viewModel = registerGoalViewModel
                     )
                 }
                 composable<Screen.ContributeGoal> {
-//                    val args = it.toRoute<ContributeGoal>()
+                    val args = it.toRoute<Screen.ContributeGoal>()
+                    val goalId = args.goalId
+                    val goalLabel = args.goalLabel
+                    val remainingAmount = args.remainingAmount
+                    val contributeGoalViewModel: ContributeGoalViewModel = hiltViewModel()
                     ContributeGoalScreen(
-                        viewModel = contributeGoalViewModel
+                        viewModel = contributeGoalViewModel,
+                        goalId = goalId,
+                        goalLabel = goalLabel,
+                        remainingAmount = remainingAmount
                     )
                 }
                 composable<Screen.Queries> {
-                    QueriesScreen(viewModel = queriesViewModel)
+                    val queriesViewModel: QueriesViewModel = hiltViewModel()
+                    QueriesScreen(
+                        viewModel = queriesViewModel,
+                        onContributeClicked = { goal ->
+                            navController.navigate(
+                                Screen.ContributeGoal(
+                                    goalId = goal.id,
+                                    goalLabel = goal.label,
+                                    remainingAmount = (goal.goalAmount - goal.currentAmount).toString()
+                                )
+                            )
+                        }
+                    )
                 }
-
             }
         }
-    }
-}
-
-@Composable
-fun BottomNavigationBar(
-    modifier: Modifier = Modifier,
-    viewModel: NavigationBarViewModel,
-    navController: NavController
-) {
-    val selectedItem by viewModel.selectedItem.collectAsState()
-    val items by viewModel.items.collectAsState()
-    NavigationBar(
-        modifier = modifier
-    ) {
-        items.forEachIndexed { index, item ->
-            val selected = selectedItem == index
-            NavigationBarItem(
-                selected = selected,
-                onClick = { viewModel.onItemSelected(index, navController) },
-                icon = {
-                    Icon(
-                        imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.title
-                    )
-                },
-                label = { Text(text = item.title) }
-            )
-        }
-    }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-private fun MainScreenPreview() {
-    MoneyRouteTheme {
-        LoginScreen(
-            modifier = Modifier
-                .fillMaxSize(),
-            viewModel = LoginViewModel(),
-            onLoginSuccess = { },
-            onWantToRegisterClicked = { }
-        )
     }
 }

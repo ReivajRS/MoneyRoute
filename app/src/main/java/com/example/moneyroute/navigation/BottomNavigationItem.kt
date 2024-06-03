@@ -19,15 +19,14 @@ sealed class BottomNavigationItem(
     val unselectedIcon: ImageVector,
     val route: Any
 ) {
-    // TODO: VER PARA CAMBIAR LOS NOMBRES
     data object HomeItem : BottomNavigationItem(
-        title = "HomeItem",
+        title = "Inicio",
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
         route = Screen.Home
     )
     data object MovementsItem : BottomNavigationItem(
-        title = "Moves",
+        title = "Movimientos",
         selectedIcon = Icons.Filled.AddCircle,
         unselectedIcon = Icons.Outlined.AddCircle,
         route = Screen.Movements

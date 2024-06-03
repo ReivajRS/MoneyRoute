@@ -1,4 +1,4 @@
-package com.example.moneyroute.movements
+package com.example.moneyroute.movements.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -58,7 +58,7 @@ fun MovementCard(
 
             TextRow(
                 title = stringResource(id = R.string.text_amount),
-                text = movement.amount.toString()
+                text = "$${movement.amount}"
             )
 
             Spacer(modifier = Modifier.height(8.dp))

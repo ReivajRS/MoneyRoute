@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 fun TitleTopBar(
     modifier: Modifier = Modifier,
     title: String,
-    backButton: Boolean = true,
+    backButton: Boolean = false,
     onBackArrowClick: () -> Unit = { },
 ) {
     CenterAlignedTopAppBar(

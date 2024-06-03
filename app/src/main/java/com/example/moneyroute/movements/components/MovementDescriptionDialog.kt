@@ -1,4 +1,4 @@
-package com.example.moneyroute.movements
+package com.example.moneyroute.movements.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

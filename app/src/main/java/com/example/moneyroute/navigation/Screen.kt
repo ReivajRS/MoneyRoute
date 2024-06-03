@@ -44,8 +44,14 @@ sealed class Screen {
     }
 
     @Serializable
-    data object ContributeGoal: Screen() {
-        val route =  "com.example.moneyroute.navigation.Screen.ContributeGoal"
+    data class ContributeGoal(
+        val goalId: String = "",
+        val goalLabel: String = "",
+        val remainingAmount: String = ""
+    ): Screen() {
+        companion object {
+            val route =  "com.example.moneyroute.navigation.Screen.ContributeGoal?goalId={goalId}&goalLabel={goalLabel}&remainingAmount={remainingAmount}"
+        }
     }
 
     @Serializable
