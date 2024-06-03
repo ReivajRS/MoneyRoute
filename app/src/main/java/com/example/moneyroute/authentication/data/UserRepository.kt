@@ -4,6 +4,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
+import com.example.moneyroute.utilities.Result
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -22,6 +25,17 @@ constructor(
         }
         catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    fun getUserAccount(userId: String): Flow<Result<User>> = flow {
+        try {
+            emit(Result.Loading())
+            val userAccount = userList.document(userId).get().await().toObject(User::class.java)
+            emit(Result.Success(userAccount))
+        }
+        catch (e: Exception) {
+            emit(Result.Error(message = e.message ?: "Error al obtener la cuenta de usuario"))
         }
     }
 

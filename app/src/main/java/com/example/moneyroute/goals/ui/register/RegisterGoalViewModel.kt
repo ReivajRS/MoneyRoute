@@ -63,7 +63,7 @@ class RegisterGoalViewModel @Inject constructor(
         }
         val goal = Goal(
             id = UUID.randomUUID().toString(),
-            userId = getCurrentUserUseCase.toString(),
+            userId = getCurrentUserUseCase.invoke(),
             label = _goalState.value.label,
             goalAmount = _goalState.value.goalAmount.toDouble(),
             startDate = _goalState.value.startDate!!,

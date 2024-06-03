@@ -115,7 +115,10 @@ fun MainScreen() {
                 Screen.Queries.route -> {
                     TitleTopBar(title = stringResource(id = R.string.title_queries))
                 }
-                // TODO: AGREGAR LA OPCION DE CUENTA
+
+                Screen.Account.route -> {
+                    TitleTopBar(title = stringResource(id = R.string.title_account))
+                }
             }
         },
         floatingActionButton = {

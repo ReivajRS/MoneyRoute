@@ -74,4 +74,7 @@
     <string name="toast_enter_label">Debe ingresar una etiqueta</string>
     <string name="toast_enter_start_date">Debe ingresar una fecha de inicio</string>
     <string name="toast_enter_end_date">Debe ingresar una fecha de fin</string>
+    <string name="toast_remaining_amount_exceeded">El monto no puede exceder el faltante</string>
+    <string name="toast_contribution_added">Abono añadido exítosamente</string>
+    <string name="title_account">Cuenta</string>
 </resources>

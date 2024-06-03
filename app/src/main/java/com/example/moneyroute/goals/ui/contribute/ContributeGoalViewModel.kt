@@ -3,6 +3,7 @@ package com.example.moneyroute.goals.ui.contribute
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.moneyroute.R
 import com.example.moneyroute.goals.data.Contribution
 import com.example.moneyroute.goals.domain.ContributeGoalUseCase
 import com.example.moneyroute.utilities.Utilities
@@ -29,20 +30,20 @@ class ContributeGoalViewModel @Inject constructor(
 
     fun onAddClicked(context: Context, goalId: String, goalLabel: String, remainingAmount: String) {
         if (_contributionState.value.amount.isBlank()) {
-            Toast.makeText(context, "Debe ingresar un monto", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.toast_enter_amount, Toast.LENGTH_SHORT).show()
             return
         }
         if (!Utilities.isPositiveNumber(_contributionState.value.amount)) {
-            Toast.makeText(context, "Debe ingresar un monto positivo", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.toast_enter_positive_amount, Toast.LENGTH_SHORT).show()
             return
         }
         if (_contributionState.value.amount.toDouble() > remainingAmount.toDouble()) {
-            Toast.makeText(context, "El monto no puede ser mayor al restante", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.toast_remaining_amount_exceeded, Toast.LENGTH_SHORT).show()
             return
         }
 
         if (!Utilities.hasInternetConnection(context)) {
-            Toast.makeText(context, "No hay conexión a internet", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.toast_no_internet_connection, Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -59,7 +60,7 @@ class ContributeGoalViewModel @Inject constructor(
             contributeGoalUseCase(contribution)
         }
 
-        Toast.makeText(context, "Abono realizado exitosamente", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.toast_contribution_added, Toast.LENGTH_SHORT).show()
     }
 }
 
