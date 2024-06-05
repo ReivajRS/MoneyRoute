@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,6 +18,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.moneyroute.account.ui.AccountScreen
+import com.example.moneyroute.account.ui.AccountViewModel
 import com.example.moneyroute.authentication.login.ui.LoginScreen
 import com.example.moneyroute.authentication.login.ui.LoginViewModel
 import com.example.moneyroute.authentication.signup.ui.SignupScreen
@@ -169,7 +172,8 @@ fun MainScreen() {
                     Screen.Home.route,
                     Screen.Movements.route,
                     Screen.Goals.route,
-                    Screen.Queries.route
+                    Screen.Queries.route,
+                    Screen.Account.route
                 )
             ) {
                 BottomNavigationBar(
@@ -202,7 +206,11 @@ fun MainScreen() {
             }
             navigation<HomeGraph>(startDestination = Screen.Home) {
                 composable<Screen.Home> {
-                    HomeScreen()
+                    val homeViewModel: HomeViewModel = hiltViewModel()
+                    HomeScreen(
+                        viewModel = homeViewModel,
+                        onBack = { navController.popBackStack() }
+                    )
                 }
                 composable<Screen.Movements> {
                     val movementsViewModel: MovementsViewModel = hiltViewModel()
@@ -218,6 +226,7 @@ fun MainScreen() {
                 }
                 composable<Screen.Goals> {
                     val goalsViewModel: GoalsViewModel = hiltViewModel()
+                    val context = LocalContext.current
                     GoalsScreen(
                         viewModel = goalsViewModel,
                         onContributeClicked = { goal ->
@@ -264,6 +273,10 @@ fun MainScreen() {
                             )
                         }
                     )
+                }
+                composable<Screen.Account> {
+                    val accountViewModel: AccountViewModel = hiltViewModel()
+                    AccountScreen(viewModel = accountViewModel)
                 }
             }
         }

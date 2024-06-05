@@ -41,11 +41,14 @@
     <string name="text_goals">Metas</string>
     <string name="text_queries">Consultas</string>
     <string name="text_account">Cuenta</string>
+    <string name="text_email">Correo</string>
+    <string name="text_full_name">Nombre completo</string>
+    <string name="text_register_date">Fecha de registro</string>
     <string name="text_filter_by_date">Filtrar por fecha</string>
     <string name="error_loading_data">Ha ocurrido un error al cargar los datos</string>
     <string name="title_login">Iniciar sesión</string>
     <string name="title_register_account">Registrar cuenta</string>
-    <string name="title_movements">Moves</string>
+    <string name="title_movements">Movimientos</string>
     <string name="title_register_movement">Registrar movimiento</string>
     <string name="title_register_periodic_movement">Registrar movimiento periódico</string>
     <string name="title_goals">Metas</string>
@@ -77,4 +80,9 @@
     <string name="toast_remaining_amount_exceeded">El monto no puede exceder el faltante</string>
     <string name="toast_contribution_added">Abono añadido exítosamente</string>
     <string name="title_account">Cuenta</string>
+    <string name="text_edit">Editar</string>
+    <string name="text_delete">Eliminar</string>
+    <string name="goal_deleted_successfully">Meta eliminada exítosamente</string>
+    <string name="movement_deleted">Movimiento eliminado</string>
+    <string name="contribution_deleted">Abono eliminado</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.moneyroute.R
@@ -26,8 +27,9 @@ fun ContributionsScreen(
     showInformationText: Boolean = true,
 ) {
     val state = viewModel.state.value
+    val context = LocalContext.current
 
-    LaunchedEffect(filter != null) {
+    LaunchedEffect(filter) {
         viewModel.getContributionList(
             prefix = filter?.prefix ?: "",
             startDate = filter?.startDate ?: 0,
@@ -39,7 +41,8 @@ fun ContributionsScreen(
         ContributionsContent(
             modifier = modifier,
             showInformationText = showInformationText,
-            contributionList = state.contributionList
+            contributionList = state.contributionList,
+            onDeleteClicked = { viewModel.deleteContribution(context, it) }
         )
         if (state.error.isNotBlank()) {
             Text(text = stringResource(R.string.error_loading_data), modifier = Modifier.align(
@@ -55,7 +58,8 @@ fun ContributionsScreen(
 fun ContributionsContent(
     modifier: Modifier = Modifier,
     showInformationText: Boolean = true,
-    contributionList: List<Contribution>
+    contributionList: List<Contribution>,
+    onDeleteClicked: (Contribution) -> Unit,
 ) {
     Column(
         modifier = modifier.padding()
@@ -67,6 +71,6 @@ fun ContributionsContent(
                 fontWeight = FontWeight.Bold
             )
         }
-        ContributionList(contributionList = contributionList)
+        ContributionList(contributionList = contributionList, onDeleteClicked = { onDeleteClicked(it) })
     }
 }

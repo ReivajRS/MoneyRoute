@@ -24,11 +24,15 @@ import com.example.moneyroute.utilities.Utilities
 @Composable
 fun ContributionCard(
     modifier: Modifier = Modifier,
-    contribution: Contribution
+    contribution: Contribution,
+    onCardClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = modifier.padding(16.dp),
+        onClick = {
+            onCardClick()
+        }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -60,6 +64,6 @@ fun ContributionCard(
 @Composable
 fun ContributionCard() {
     MoneyRouteTheme {
-        ContributionCard(contribution = Contribution(goalLabel = "Meta"))
+        ContributionCard(contribution = Contribution(goalLabel = "Meta"), onCardClick = {})
     }
 }

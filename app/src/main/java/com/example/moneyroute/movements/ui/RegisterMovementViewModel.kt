@@ -27,7 +27,7 @@ class RegisterMovementViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
-    private val _movementState = MutableStateFlow(MovementState("", "", "", null, "", null))
+    private val _movementState = MutableStateFlow(MovementState())
     val movementState = _movementState.asStateFlow()
 
     private val _movementTypes = MutableStateFlow<List<String>>(emptyList())
@@ -112,6 +112,7 @@ class RegisterMovementViewModel @Inject constructor(
             periodicity = movementState.value.periodicity
         )
         addMovement(movement)
+        clearFields()
         Toast.makeText(context, R.string.toast_movement_added_successfully, Toast.LENGTH_SHORT).show()
     }
 
@@ -148,13 +149,19 @@ class RegisterMovementViewModel @Inject constructor(
             addMovementUseCase(movement)
         }
     }
+
+    private fun clearFields() {
+        _movementState.value = MovementState()
+    }
+
+    private fun isValidMaxLength(input: String, maxLength: Int): Boolean = Utilities.isValidMaxLength(input, maxLength)
 }
 
 data class MovementState(
-    val amount: String,
-    val movementType: String,
-    val category: String,
-    val date: Long?,
-    val description: String,
-    val periodicity: Periodicity?
+    val amount: String = "",
+    val movementType: String = "",
+    val category: String = "",
+    val date: Long? = null,
+    val description: String = "",
+    val periodicity: Periodicity? = null
 )

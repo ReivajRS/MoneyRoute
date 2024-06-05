@@ -9,11 +9,11 @@ data class Goal(
     val startDate: Long = 0,
     val goalDate: Long = Long.MAX_VALUE,
     val description: String = "",
-    val status: String = Status.active.status
+    val status: String = Status.Active.status
 )
 
-sealed class Status(val status: String) {
-    data object active : Status(status = "Activa")
-    data object achieved : Status(status = "Lograda")
-    data object unachieved : Status(status = "No lograda")
+sealed class Status(val status: String = "") {
+    data object Active : Status(status = "Activa")
+    data object Achieved : Status(status = "Lograda")
+    data object NotAchieved : Status(status = "No lograda")
 }

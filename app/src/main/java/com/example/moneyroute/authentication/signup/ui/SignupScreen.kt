@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
+import com.example.moneyroute.components.HeaderImage
 
 @Composable
 fun SignupScreen(
@@ -53,55 +54,89 @@ fun Signup(modifier: Modifier = Modifier, viewModel: SignupViewModel) {
     val email: String by viewModel.email.collectAsState()
     val password: String by viewModel.password.collectAsState()
     val confirmPassword: String by viewModel.confirmPassword.collectAsState()
-    val signupEnable: Boolean by viewModel.signupEnable.collectAsState()
     val context = LocalContext.current
 
     Column(modifier = modifier) {
-        HeaderImage(Modifier.align(Alignment.CenterHorizontally))
+        HeaderImage(
+            Modifier
+                .align(Alignment.CenterHorizontally)
+                .size(200.dp),
+            painter = painterResource(id = R.drawable.no_bg_logo)
+        )
         Spacer(modifier = Modifier.padding(16.dp))
         FirstNameField(
             firstName = firstName,
-            onTextFieldChange = { viewModel.onSignupChange(it, lastName, email, password, confirmPassword) }
+            onTextFieldChange = {
+                viewModel.onSignupChange(
+                    it,
+                    lastName,
+                    email,
+                    password,
+                    confirmPassword
+                )
+            }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         LastNameField(
             lastName = lastName,
-            onTextFieldChange = { viewModel.onSignupChange(firstName, it, email, password, confirmPassword) }
+            onTextFieldChange = {
+                viewModel.onSignupChange(
+                    firstName,
+                    it,
+                    email,
+                    password,
+                    confirmPassword
+                )
+            }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         EmailField(
             email = email,
-            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, it, password, confirmPassword) }
+            onTextFieldChange = {
+                viewModel.onSignupChange(
+                    firstName,
+                    lastName,
+                    it,
+                    password,
+                    confirmPassword
+                )
+            }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         PasswordField(
             password = password,
-            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, email, it, confirmPassword) }
+            onTextFieldChange = {
+                viewModel.onSignupChange(
+                    firstName,
+                    lastName,
+                    email,
+                    it,
+                    confirmPassword
+                )
+            }
         )
         Spacer(modifier = Modifier.padding(8.dp))
         ConfirmPasswordField(
             confirmPassword = confirmPassword,
-            onTextFieldChange = { viewModel.onSignupChange(firstName, lastName, email, password, it) }
+            onTextFieldChange = {
+                viewModel.onSignupChange(
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    it
+                )
+            }
         )
         Spacer(modifier = Modifier.padding(16.dp))
         SignupButton(
-            Modifier
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
                 .height(48.dp),
-            signupEnable = signupEnable,
             onSignupClicked = { viewModel.onSignupClicked(context) }
         )
     }
-}
-
-@Composable
-fun HeaderImage(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.no_bg_logo),
-        contentDescription = "Application logo",
-        modifier = modifier.size(200.dp)
-    )
 }
 
 @Composable
@@ -167,14 +202,12 @@ fun ConfirmPasswordField(modifier: Modifier = Modifier, confirmPassword: String,
 @Composable
 fun SignupButton(
     modifier: Modifier = Modifier,
-    signupEnable: Boolean,
     onSignupClicked: () -> Unit
 ) {
     Button(
         onClick = {
             onSignupClicked()
         },
-        enabled = signupEnable,
         modifier = modifier
     ) {
         Text(text = stringResource(id = R.string.button_signup))

@@ -15,7 +15,9 @@ import com.example.moneyroute.goals.data.Goal
 fun GoalList(
     modifier: Modifier = Modifier,
     goalList: List<Goal>,
-    onContributeClicked: (Goal) -> Unit
+    onContributeClicked: (Goal) -> Unit,
+    onDeleteClicked: (Goal) -> Unit,
+    onEditClicked: (Goal) -> Unit,
 ) {
     var selectedGoal: Goal? by remember { mutableStateOf(null) }
     LazyColumn(modifier = modifier) {
@@ -27,7 +29,10 @@ fun GoalList(
         GoalDescriptionDialog(
             goal = goal,
             onDismiss = { selectedGoal = null },
-            onContribute = { onContributeClicked(goal) })
+            onDelete = { onDeleteClicked(goal) },
+            onEdit = { onEditClicked(goal) },
+            onContribute = { onContributeClicked(goal) },
+        )
     }
 }
 
@@ -90,5 +95,5 @@ private fun GoalListPreview() {
             status = "No iniciado"
         )
     )
-    GoalList(goalList = goals, onContributeClicked = { })
+    GoalList(goalList = goals, onContributeClicked = { }, onDeleteClicked = { }, onEditClicked = { })
 }

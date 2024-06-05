@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.moneyroute.R
+import com.example.moneyroute.components.HeaderImage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -77,7 +78,12 @@ fun Login(
     }
 
     Column(modifier = modifier) {
-        HeaderImage(modifier = Modifier.align(Alignment.CenterHorizontally))
+        HeaderImage(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .size(240.dp),
+            painter = painterResource(id = R.drawable.no_bg_logo)
+        )
         Spacer(modifier = Modifier.padding(16.dp))
         EmailField(email = email, onTextFieldChange = { viewModel.onLoginChange(it, password) })
         Spacer(modifier = Modifier.padding(8.dp))
@@ -103,15 +109,6 @@ fun Login(
             onWantToRegisterClicked = onWantToRegisterClicked
         )
     }
-}
-
-@Composable
-fun HeaderImage(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.no_bg_logo),
-        contentDescription = "Application logo",
-        modifier = modifier.size(240.dp)
-    )
 }
 
 @Composable

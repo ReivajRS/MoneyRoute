@@ -1,7 +1,6 @@
 package com.example.moneyroute.authentication.signup.ui
 
 import android.content.Context
-import android.util.Patterns
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.moneyroute.R
@@ -39,16 +38,12 @@ class SignupViewModel @Inject constructor(
     private val _confirmPassword = MutableStateFlow("")
     val confirmPassword = _confirmPassword.asStateFlow()
 
-    private val _signupEnable = MutableStateFlow(false)
-    val signupEnable = _signupEnable.asStateFlow()
-
     fun onSignupChange(firstName: String, lastName: String, email: String, password: String, confirmPassword: String) {
         _firstName.value = firstName
         _lastName.value = lastName
         _email.value = email
         _password.value = password
         _confirmPassword.value = confirmPassword
-        _signupEnable.value = firstName.isNotBlank() && lastName.isNotBlank() && isValidEmail(email) && isValidPassword(password) && isSamePassword(password, confirmPassword)
     }
 
     fun onSignupClicked(context: Context) {
@@ -71,7 +66,6 @@ class SignupViewModel @Inject constructor(
                 )
             )
         }
-
         Toast.makeText(context, R.string.toast_signup_successfully, Toast.LENGTH_SHORT).show()
     }
 
@@ -84,30 +78,18 @@ class SignupViewModel @Inject constructor(
             Toast.makeText(context, R.string.toast_enter_last_name, Toast.LENGTH_SHORT).show()
             return false
         }
-        if (_email.value.isBlank()) {
+        if (!Utilities.isValidEmail(_email.value)) {
             Toast.makeText(context, R.string.toast_enter_email, Toast.LENGTH_SHORT).show()
             return false
         }
-        if (_password.value.isBlank()) {
+        if (!Utilities.isValidPassword(_password.value)) {
             Toast.makeText(context, R.string.toast_invalid_password, Toast.LENGTH_SHORT).show()
             return false
         }
-        if (_confirmPassword.value.isBlank()) {
+        if (!Utilities.isSamePassword(_password.value, _confirmPassword.value)) {
             Toast.makeText(context, R.string.toast_unmatched_passwords, Toast.LENGTH_SHORT).show()
             return false
         }
         return true
-    }
-
-//    fun addNewUser() {
-//        val user = User(firstName.value, lastName.value, email.value, password.value)
-//    }
-
-    private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-    private fun isValidPassword(password: String): Boolean = password.length >= 8
-
-    private fun isSamePassword(password: String, confirmPassword: String): Boolean {
-        return password == confirmPassword
     }
 }

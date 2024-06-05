@@ -12,7 +12,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class UserRepository
+class UsersRepository
 @Inject
 constructor(
     @Named("users")
@@ -55,6 +55,10 @@ constructor(
         } catch(e: Exception) {
             AuthRes.Error(e.message ?: "Error al iniciar sesión")
         }
+    }
+
+    fun signOut() {
+        firebaseAuth.signOut()
     }
 
     fun getUserId(): String? = firebaseAuth.currentUser?.uid

@@ -40,7 +40,8 @@ class LoginViewModel @Inject constructor(
         }
 
         if (!Utilities.hasInternetConnection(context)) {
-            Toast.makeText(context, R.string.toast_no_internet_connection, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.toast_no_internet_connection, Toast.LENGTH_SHORT)
+                .show()
             return false
         }
 
@@ -54,7 +55,8 @@ class LoginViewModel @Inject constructor(
 
         withContext(Dispatchers.Main) {
             if (success) {
-                Toast.makeText(context, R.string.toast_login_successfully, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.toast_login_successfully, Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 Toast.makeText(context, R.string.toast_login_failed, Toast.LENGTH_SHORT).show()
             }
@@ -74,10 +76,9 @@ class LoginViewModel @Inject constructor(
         }
         return true
     }
-}
 
-data class LoginState(
-    val user: User = User(),
-    val isLoading: Boolean = false,
-    val error: String = ""
-)
+    private fun clearFields() {
+        _email.value = ""
+        _password.value = ""
+    }
+}

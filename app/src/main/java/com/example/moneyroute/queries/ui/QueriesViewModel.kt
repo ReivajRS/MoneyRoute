@@ -36,7 +36,7 @@ class QueriesViewModel @Inject constructor(
         loadTabs()
     }
 
-    private fun loadTabs() {
+    fun loadTabs() {
         CoroutineScope(Dispatchers.IO).launch {
             _tabs.value = getTabsUseCase().map { tab -> tab.name }
         }

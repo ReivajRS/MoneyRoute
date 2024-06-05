@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,11 +26,12 @@ fun GoalsScreen(
     viewModel: GoalsViewModel,
     filter: QueryFilter? = null,
     showInformationText: Boolean = true,
-    onContributeClicked: (Goal) -> Unit
+    onContributeClicked: (Goal) -> Unit,
 ) {
     val state = viewModel.state.value
+    val context = LocalContext.current
 
-    LaunchedEffect(filter != null) {
+    LaunchedEffect(filter) {
         viewModel.getGoalList(
             prefix = filter?.prefix ?: "",
             startDate = filter?.startDate ?: 0,
@@ -42,7 +44,9 @@ fun GoalsScreen(
             modifier = modifier,
             showInformationText = showInformationText,
             goalList = state.goalList,
-            onContributeClicked = { onContributeClicked(it) }
+            onContributeClicked = { onContributeClicked(it) },
+            onDeleteClicked = { viewModel.deleteGoal(context = context, it.id) },
+            onEditClicked = {  }
         )
         if (state.error.isNotBlank()) {
             Text(text = stringResource(R.string.error_loading_data), modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.error)
@@ -59,7 +63,9 @@ fun GoalsContent(
     modifier: Modifier = Modifier,
     showInformationText: Boolean = true,
     goalList: List<Goal>,
-    onContributeClicked: (Goal) -> Unit
+    onContributeClicked: (Goal) -> Unit,
+    onDeleteClicked: (Goal) -> Unit,
+    onEditClicked: (Goal) -> Unit
 ) {
     Column(
         modifier = modifier.padding(16.dp)
@@ -73,7 +79,9 @@ fun GoalsContent(
         }
         GoalList(
             goalList = goalList,
-            onContributeClicked = { onContributeClicked(it) }
+            onContributeClicked = { onContributeClicked(it) },
+            onDeleteClicked = { onDeleteClicked(it) },
+            onEditClicked = { onEditClicked(it) }
         )
     }
 }

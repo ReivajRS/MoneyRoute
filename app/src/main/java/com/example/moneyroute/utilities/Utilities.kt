@@ -24,6 +24,10 @@ object Utilities {
 
     fun isValidDateRange(startDate: Long, endDate: Long): Boolean = startDate <= endDate
 
+    fun isSamePassword(password: String, confirmPassword: String): Boolean {
+        return password == confirmPassword
+    }
+
     fun hasInternetConnection(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkCapabilities = connectivityManager.activeNetwork
@@ -31,4 +35,6 @@ object Utilities {
             NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
         return hasInternet
     }
+
+    fun isValidMaxLength(input: String, maxLength: Int) = input.length <= maxLength
 }

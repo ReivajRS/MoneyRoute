@@ -62,13 +62,25 @@ class GoalsRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteGoal(goalId: String) {
+        try {
+            contributionsCollection.whereEqualTo("goalId", goalId).get().await().documents.forEach {
+                it.reference.delete().await()
+            }
+            goalsCollection.document(goalId).delete().await()
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     suspend fun contributeGoal(contribution: Contribution) {
         try {
             val goal =
                 goalsCollection.document(contribution.goalId).get().await().toObject(Goal::class.java) ?: return
             val currentAmount = goal.currentAmount
             val newAmount = currentAmount + contribution.amount
-            val status = if (newAmount >= goal.goalAmount) Status.achieved.status else goal.status
+            val status = if (newAmount >= goal.goalAmount) Status.Achieved.status else goal.status
 
             contributionsCollection.document(contribution.id).set(contribution).await()
             goalsCollection.document(contribution.goalId)
@@ -114,6 +126,27 @@ class GoalsRepository @Inject constructor(
         }
         catch (e: Exception) {
             emit(Result.Error(message = e.localizedMessage ?: "Error desconocido"))
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun deleteContribution(contributionId: String, goalId: String) {
+        try {
+            val contribution = contributionsCollection.document(contributionId).get().await()
+                .toObject(Contribution::class.java) ?: return
+            contributionsCollection.document(contributionId).delete().await()
+            val goal =
+                goalsCollection.document(goalId).get().await().toObject(Goal::class.java) ?: return
+            val isGoalAchieved = goal.currentAmount >= goal.goalAmount
+            if (isGoalAchieved && System.currentTimeMillis() > goal.goalDate) {
+                goalsCollection.document(goalId).update("status", Status.NotAchieved.status)
+            }
+            else {
+                goalsCollection.document(goalId).update("status", Status.Active.status)
+            }
+            goalsCollection.document(goalId).update("currentAmount", goal.currentAmount - contribution.amount)
+        }
+        catch (e: Exception) {
             e.printStackTrace()
         }
     }

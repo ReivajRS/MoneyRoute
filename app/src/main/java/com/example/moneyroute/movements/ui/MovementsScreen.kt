@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -21,7 +22,6 @@ import com.example.moneyroute.movements.components.MovementList
 import com.example.moneyroute.movements.data.Movement
 import com.example.moneyroute.utilities.QueryFilter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovementsScreen(
     modifier: Modifier = Modifier,
@@ -30,27 +30,9 @@ fun MovementsScreen(
     filter: QueryFilter? = null
 ) {
     val state by viewModel.state
-    // TODO: ADD PULL TO REFRESH
-//    val pullToRefreshState = rememberPullToRefreshState()
-//    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val context = LocalContext.current
 
-//    if (pullToRefreshState.isRefreshing) {
-//        LaunchedEffect(true) {
-//
-//        }
-//    }
-//
-//    LaunchedEffect(isRefreshing) {
-//        if (isRefreshing) {
-//            pullToRefreshState.startRefresh()
-//        } else {
-//            pullToRefreshState.endRefresh()
-//        }
-//    }
-//
-//    PullToRefreshContainer(state = pullToRefreshState, modifier)
-
-    LaunchedEffect(filter != null) {
+    LaunchedEffect(filter) {
         viewModel.getMovementList(
             prefix = filter?.prefix ?: "",
             startDate = filter?.startDate ?: 0,
@@ -62,7 +44,9 @@ fun MovementsScreen(
         MovementsContent(
             modifier = modifier,
             showInformationText = showInformationText,
-            movementList = state.movementList
+            movementList = state.movementList,
+            onDeleteClicked = { viewModel.deleteMovement(context, it) },
+            onEditClicked = {  }
         )
 
         if (state.error.isNotBlank()) {
@@ -80,7 +64,9 @@ fun MovementsScreen(
 fun MovementsContent(
     modifier: Modifier = Modifier,
     showInformationText: Boolean = true,
-    movementList: List<Movement>
+    movementList: List<Movement>,
+    onDeleteClicked: (Movement) -> Unit,
+    onEditClicked: (Movement) -> Unit
 ) {
     Column(
         modifier = modifier.padding(16.dp)
@@ -92,6 +78,6 @@ fun MovementsContent(
                 fontWeight = FontWeight.Bold
             )
         }
-        MovementList(movementList = movementList)
+        MovementList(movementList = movementList, onDeleteClicked = { onDeleteClicked(it) }, onEditClicked = { onEditClicked(it) })
     }
 }

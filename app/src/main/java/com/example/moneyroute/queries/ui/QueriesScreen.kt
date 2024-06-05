@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -46,6 +49,7 @@ fun Queries(
     viewModel: QueriesViewModel,
     onContributeClicked: (Goal) -> Unit
 ) {
+
     val tabs: List<String> by viewModel.tabs.collectAsState()
     val selectedTab: Int by viewModel.selectedTab.collectAsState()
     val searchBarText: String by viewModel.searchBarText.collectAsState()
@@ -53,13 +57,13 @@ fun Queries(
 
     val context = LocalContext.current
 
-    val queryFilter = if (searchBarText.isNotBlank() || filterByDateState.enable) QueryFilter(
+    val queryFilter = QueryFilter(
         searchBarText,
         filterByDateState.startDate ?: 0,
         filterByDateState.endDate ?: Long.MAX_VALUE
-    ) else null
+    )
 
-    Column(modifier = modifier) {
+    Column() {
         TabComponent(tabs = tabs) { viewModel.onTabSelected(it) }
 
         SearchBar(
@@ -95,7 +99,7 @@ fun Queries(
                 MovementsScreen(
                     viewModel = movementsViewModel,
                     showInformationText = false,
-                    filter = queryFilter
+                    filter = queryFilter,
                 )
             }
             Tab.Goals.ordinal -> {
@@ -104,7 +108,7 @@ fun Queries(
                     viewModel = goalsViewModel,
                     showInformationText = false,
                     filter = queryFilter,
-                    onContributeClicked = { onContributeClicked(it) }
+                    onContributeClicked = { onContributeClicked(it) },
                 )
             }
             Tab.Contributions.ordinal -> {
@@ -112,7 +116,7 @@ fun Queries(
                 ContributionsScreen(
                     viewModel = contributionsViewModel,
                     showInformationText = false,
-                    filter = queryFilter
+                    filter = queryFilter,
                 )
             }
         }

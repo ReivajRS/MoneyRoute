@@ -16,7 +16,9 @@ import com.example.moneyroute.movements.data.RepetitionType
 @Composable
 fun MovementList(
     modifier: Modifier = Modifier,
-    movementList: List<Movement>
+    movementList: List<Movement>,
+    onDeleteClicked: (Movement) -> Unit,
+    onEditClicked: (Movement) -> Unit
 ) {
     var selectedMovement: Movement? by remember { mutableStateOf(null) }
     LazyColumn(modifier = modifier) {
@@ -25,7 +27,12 @@ fun MovementList(
         }
     }
     selectedMovement?.let {
-        MovementDescriptionDialog(movement = it, onDismiss = { selectedMovement = null })
+        MovementDescriptionDialog(
+            movement = it,
+            onDismiss = { selectedMovement = null },
+            onDelete = { onDeleteClicked(it) },
+            onEdit = { onEditClicked(it) }
+        )
     }
 }
 
@@ -78,5 +85,5 @@ private fun MovementListPreview() {
             )
         )
     )
-    MovementList(movementList = movements)
+    MovementList(movementList = movements, onDeleteClicked = {}, onEditClicked = {})
 }

@@ -44,4 +44,12 @@ class MovementsRepository @Inject constructor(
             emit(Result.Error(message = e.localizedMessage ?: "Error desconocido"))
         }
     }
+
+    suspend fun deleteMovement(movementId: String) {
+        try {
+            movementsCollection.document(movementId).delete().await()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }

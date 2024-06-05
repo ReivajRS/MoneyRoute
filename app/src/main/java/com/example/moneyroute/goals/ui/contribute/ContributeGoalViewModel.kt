@@ -60,7 +60,12 @@ class ContributeGoalViewModel @Inject constructor(
             contributeGoalUseCase(contribution)
         }
 
+        clearFields()
         Toast.makeText(context, R.string.toast_contribution_added, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun clearFields() {
+        _contributionState.value = ContributionState("")
     }
 }
 
